@@ -1,4 +1,4 @@
-
+from controllers.time import get_timestamp
 
 
 """
@@ -27,7 +27,7 @@ class Match:
         self._winner = ""                            
 
     def __str__(self):
-        return f"Match : {self._player1} vs {self._player2}"
+        return f'Match {self._player1} vs {self._player2}'
 
 
     def __repr__(self):
@@ -72,8 +72,6 @@ class Match:
 
 
 # Instanciations  
-
-
 score_player1 = 0
 score_player2 = 1
 
