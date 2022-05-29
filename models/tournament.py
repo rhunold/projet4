@@ -16,19 +16,18 @@ class Tournament:
         self._time_control = time_control      
         
     def __str__(self):
-                str = (
+                return (
                     f'Tournoi : {self._name}\n'
                     f'Description : {self._description}\n'
                     f'Start Date : {self._start_date}\n'
                     f'End Date : {self._end_date}\n'
                     f'Location : {self._location}\n'
                     f'Number of Round : {self._round_number}\n'
-                    f'Rounds List : {self._round_list}\n'
+                    f'Rounds List : {[str(rounds) for rounds in self._round_list]}\n'
                     f'Players List : {self._player_list}\n'
                     f'Time Control : {self._time_control}\n'
                     f'Lieu : {self._location}'
                 )
-                return str
     
     
     def __repr__(self):
