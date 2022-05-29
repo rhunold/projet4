@@ -20,7 +20,7 @@ class Match:
     def __init__(self, player_pair):
         self._player1 = player_pair[0]
         self._player2 = player_pair[1]
-        self._start_date = ""
+        self._start_date = get_timestamp()
         self._end_date = ""
         self._score_player1 = 0
         self._score_player2 = 0
@@ -42,8 +42,11 @@ class Match:
         self._player2 = x
         
     def set_winner(self, x):
-        self._winner = x        
-          
+        self._winner = x
+        self._end_date = get_timestamp()
+
+    def set_end_date(self, x):
+        self._end_date = x       
 
     # get method
     
@@ -55,6 +58,12 @@ class Match:
     
     def get_winner(self):
         return self._winner
+    
+    def get_start_date(self):
+        return self._start_date
+
+    def get_end_date(self):
+        return self._end_date
 
 
     def play_match():

@@ -6,7 +6,7 @@ from models.rounds import Round
 from models.tournament import Tournament
 
 
-player1 = Player("Hunold", "Raphael", "03/04/1977", "Homme", 1, [1, 3, 6], 5)
+player1 = Player("Hunold", "Raphael", "04/04/1977", "Homme", 1, [1, 3, 6], 5)
 player2 = Player("Hunold", "Théa", "14/06/2015", "Femme", 2, [2, 4, 5], 3)
 player3 = Player("Hunold", "Gabriel", "11/07/1978", "Homme", 3, [1, 3, 6], 5)
 player4 = Player("Hunold", "Aloise", "31/01/1980", "Femme", 4, [2, 4, 5], 3)
@@ -40,32 +40,37 @@ def main():
     # print("########### Joueur1 #############")
     # print(player1)
     
-    # print("########### Changer le ranking du joueur 1 #############")       
-    # player1.set_rank(12)    
-    # print(player1)
-    
-    print("########### Match1 #############")    
-    print(match1)
-    
-    print("########### Indiqué un gagnant dans le match1 #############")  
-    print(match1)
-    time.sleep(2.4)
-    
-    print(match1.set_winner("Raphael"))        
-    print(match1.get_winner())
-    print("Date début")
-    print(match1.get_start_date())
-    print("Date fin après assignation gagnant")           
-    print(match1.get_end_date())    
- 
-    
+    # print("########### Match1 #############")    
+    # print(match1)
     
     # print("########### Round1 #############")      
     # print(round1)
     
     # print("########### Tournoi1 #############")    
     # print(tournament1)
+
+    print("########### Vérifier format date joueurs #############")       
+    player1.set_birthdate("22-12-2000")  
     
+    
+    print(player1)    
+
+    
+    # print("########### Changer le ranking du joueur 1 #############")       
+    # player1.set_rank(12)    
+    # print(player1)    
+    
+    # print("########### Indiqué un gagnant dans le match1 #############")  
+    # print(match1)
+    # time.sleep(2.5)
+    
+    # print(match1.set_winner("Raphael"))        
+    # print(match1.get_winner())
+    # print("Date début")
+    # print(match1.get_start_date())
+    # print("Date fin après assignation gagnant")           
+    # print(match1.get_end_date())    
+ 
     # print(repr(tournament1))
         
 

@@ -1,4 +1,4 @@
-
+from datetime import datetime
 
 class Player:
     """Player Model"""
@@ -22,7 +22,8 @@ class Player:
                     f'{self._first_name} {self._name}\n'
                     f'Score du tournoi : {self._tournament_score}\n'
                     f'Classement : {self._rank}\n'
-                    f'Liste Joueurs avec qui déjà joué : {self._played_with}\n'                    
+                    f'Liste Joueurs avec qui déjà joué : {self._played_with}\n'
+                    f'Naissance : {self._birthdate}\n'                    
                 )
                 return str    
     
@@ -35,9 +36,15 @@ class Player:
         
     def set_first_name(self, x):
         self._first_name = x
+
         
     def set_birthdate(self, x):
         self._birthdate = x
+        try:
+            datetime.strptime(self.get_birthdate(), '%d-%m-%Y')
+        except ValueError:
+            raise ValueError("Mauvais format, le bon format est JJ-MM-AAAA")
+    
         
     def set_sex(self, x):
         self._sex= x
