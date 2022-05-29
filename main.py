@@ -1,8 +1,9 @@
+import time
+
 from models.player import Player
 from models.match import Match
 from models.rounds import Round
 from models.tournament import Tournament
-
 
 
 player1 = Player("Hunold", "Raphael", "03/04/1977", "Homme", 1, [1, 3, 6], 5)
@@ -36,21 +37,34 @@ tournament1 = Tournament("Grand tour été 2022", "Cela va être super !!!", "22
 
 def main():
     
-    print("########### Joueur1 #############")
-    print(player1)
+    # print("########### Joueur1 #############")
+    # print(player1)
+    
+    # print("########### Changer le ranking du joueur 1 #############")       
+    # player1.set_rank(12)    
+    # print(player1)
     
     print("########### Match1 #############")    
     print(match1)
     
-    print("########### Changer le ranking du joueur 1 #############")       
-    player1.set_rank(12)    
-    print(player1)
+    print("########### Indiqué un gagnant dans le match1 #############")  
+    print(match1)
+    time.sleep(2.4)
     
-    print("########### Round1 #############")      
-    print(round1)
+    print(match1.set_winner("Raphael"))        
+    print(match1.get_winner())
+    print("Date début")
+    print(match1.get_start_date())
+    print("Date fin après assignation gagnant")           
+    print(match1.get_end_date())    
+ 
     
-    print("########### Tournoi1 #############")    
-    print(tournament1)
+    
+    # print("########### Round1 #############")      
+    # print(round1)
+    
+    # print("########### Tournoi1 #############")    
+    # print(tournament1)
     
     # print(repr(tournament1))
         
