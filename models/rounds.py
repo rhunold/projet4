@@ -9,6 +9,8 @@ Elle doit également contenir un champ Date et heure de début et un champ Date 
 qui doivent tous deux être automatiquement remplis lorsque l'utilisateur crée un tour et le marque comme terminé.
 
 Les instances de round doivent être stockées dans une liste sur l'instance de tournoi à laquelle elles appartiennent.
+
+Test
 """
 
 
@@ -23,14 +25,19 @@ class Round:
 
         # self._round_number = round_number # len de list_matchs
         # self._active_round = False     
-                           
-
+                        
+                        
+           
+  
     def __str__(self):
-        return f"Rounds : {self._name} "    
+        return f"Rounds : {self._name} {[str(match) for match in self._list_matchs]} "    
 
     def __repr__(self):
+        pass
         # return f"Liste des Matchs du Round : "
-        return (self.list_matchs)
+        #return (self.list_matchs)
+    
+        return str([str(match) for match in self.list_matchs])
 
 
     # setter method
