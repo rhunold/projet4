@@ -29,15 +29,19 @@ class Round:
   
     def __str__(self):
         return (
-            f'Round {self._name}'
+            f'Round {self._name}, '
             f'{[str(match) for match in self._list_matchs]}'
             )
 
 
-    def __repr__(self):
-        return f'{[str(match) for match in self._list_matchs]}' 
+    # def __repr__(self):
+    #     return f'{[str(match) for match in self._list_matchs]}' 
      
-
+    def __repr__(self):
+        display_repr = (
+            f'Round({self._name}, {[str(match) for match in self._list_matchs]}'
+        )
+        return display_repr 
 
     # get method
     @property    

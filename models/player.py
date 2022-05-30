@@ -19,17 +19,30 @@ class Player:
         return f"{self._first_name} {self._name} a {self._tournament_score} points dans le tournoi."
     
     def __str__(self):
-                str = (
-                    f'{self._first_name} {self._name}\n'
-                    f'Score du tournoi : {self._tournament_score}\n'
-                    f'Classement : {self._rank}\n'
-                    f'Liste Joueurs avec qui déjà joué : {self._played_with}\n'
-                    f'Naissance : {self._birthdate}\n'                    
-                )
-                return str    
+        str = (
+            f'{self._first_name} {self._name}\n'
+            f'Score du tournoi : {self._tournament_score}\n'
+            f'Classement : {self._rank}\n'
+            f'Liste Joueurs avec qui déjà joué : {self._played_with}\n'
+            f'Naissance : {self._birthdate}\n'
+            )
+        return str    
     
     def __repr__(self):
-        return f"{self._first_name} {self._name}"
+        display_repr = (
+            f'{self._first_name} {self._name}'
+            
+            # f'Player('
+            # f'"{self._name}", '
+            # f'"{self._first_name}", '
+            # f'"{self._birthdate}", '   
+            # f'"{self.sex}", ' 
+            # f'{self._rank}, '
+            # f'{self._played_with}, '
+            # f'{self._tournament_score})'
+        )
+        
+        return display_repr
 
     # get method
     @property 

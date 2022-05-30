@@ -33,40 +33,53 @@ class Tournament:
     
     def __repr__(self):
         return (f'{[str(rounds) for rounds in self._list_rounds]}')
-    
-    # setter method
-    def set_name(self, x):
-        self._name = x
-        
-    def set_description(self, x):
-        self._description = x
 
-    def set_start_date(self, x):
-        self._start_date = x  
-
-    def set_end_date(self, x):
-        self._end_date = x        
-
-    def set_round_number(self, x):
-        self._round_number = x
-
-    # get method
-    def get_name(self):
+   # get method
+    @property
+    def name(self):
         return self._name
-    
-    def get_start_date(self):
-        return self._start_date      
-    
-    def get_end_date(self):
+
+    @property    
+    def start_date(self):
+        return self._start_date  
+        
+    @property
+    def end_date(self):
         return self._end_date      
 
-    def get_description(self):
+    @property
+    def description(self):
         return self._description
-     
-    def get_round_number(self):
+
+    @property     
+    def round_number(self):
         return self._round_number
 
 
+    # setter method
+    @name.setter
+    def name(self, x):
+        self._name = x
+    
+    @description.setter    
+    def description(self, x):
+        self._description = x
+
+    @start_date.setter
+    def start_date(self, x):
+        self._start_date = x  
+
+    @end_date.setter
+    def end_date(self, x):
+        self._end_date = x        
+
+    @round_number.setter
+    def round_number(self, x):
+        self._round_number = x
+
+ 
+
+    # Other methods
     def add_participant():
         pass # append player indice too the list
   

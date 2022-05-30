@@ -26,38 +26,35 @@ round2 = Round("2", [match2, match4, match3, match1])
 tournament1 = Tournament("Grand tour été 2022", "Cela va être super !!!", "22/05/2022", "Lyon", 2, [round1,round2], [player1, player2, player3, player4, player5, player6, player7, player8], "Bullet")
 
 
-
-
-
-
 def main():
     
-    print("########### Joueur1 #############")
+    # print("########### Joueur1 #############")
 
-    # print(player1.birthdate) 
+    # print(repr(player1))
   
-    # # print("########### Test modif date naissance NOK #############")
-    # player1.birthdate = "30-02-2000"       
-    # print(player1)
+    # print("########### Test modif date naissance NOK #############")
+    # print(player1.birthdate)    
+    # player1.birthdate = "30-02-2000"  
+    # print(player1.birthdate)        
+              
+
     
     # print("########### Match1 #############")    
     # print(match1)
     
-    print("########### Round1 #############")      
-
-
-    print(round1.name)
-    print()
-    print(round1.list_matchs)   
-    print()
-    print(round1.start_date)
-    print()
-    time.sleep(2.5)    
-    print(round1.end_date)          
+    # print("########### Round1 #############")      
+    # print(round1)
+    # print()
+    # print(round1.list_matchs)   
+    # print()
+    # print(round1.start_date)
+    # print()
+    # time.sleep(2.5)    
+    # print(round1.end_date)          
     
-    # print("########### Tournoi1 #############")    
-    # #tournament1.run_rounds()
-    # print(tournament1)      
+    print("########### Tournoi1 #############")    
+    #tournament1.run_rounds()
+    print(tournament1)      
     
     # print("########### Indiqué un gagnant dans le match1 #############")  
     # print(match1)

@@ -27,11 +27,18 @@ class Match:
         self._winner = ""                            
 
     def __str__(self):
-        return f'Match {self._player1} vs {self._player2}'
+        return f'{self._player1} vs {self._player2}'
 
 
     def __repr__(self):
-        return ([self._player1, self._score_player1], [self._player2, self._score_player2])
+        display_repr = (
+            f'Match('
+            f'{self._player1},'
+            f'{self._score_player1},'
+            f'{self._player2},'
+            f'{self._score_player2})'        
+        )
+        return display_repr    
 
     # get method
     @property
