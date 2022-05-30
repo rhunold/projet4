@@ -33,37 +33,44 @@ class Match:
     def __repr__(self):
         return ([self._player1, self._score_player1], [self._player2, self._score_player2])
 
+    # get method
+    @property
+    def player1(self):
+        return self._player1
+
+    @property
+    def player2(self):
+        return self._player2
+
+    @property    
+    def winner(self):
+        return self._winner
+
+    @property    
+    def start_date(self):
+        return self._start_date
+    @property
+    def end_date(self):
+        return self._end_date
+
     # setter method
-        
-    def set_player1(self, x):
+    @player1.setter          
+    def player1(self, x):
         self._player1 = x
-  
-    def set_player2(self, x):
+
+    @player2.setter 
+    def player2(self, x):
         self._player2 = x
-        
-    def set_winner(self, x):
+
+    @winner.setter     
+    def winner(self, x):
         self._winner = x
         self._end_date = get_timestamp()
 
-    def set_end_date(self, x):
+    @end_date.setter 
+    def end_date(self, x):
         self._end_date = x       
 
-    # get method
-    
-    def get_player1(self):
-        return self._player1
-    
-    def get_player2(self):
-        return self._player2
-    
-    def get_winner(self):
-        return self._winner
-    
-    def get_start_date(self):
-        return self._start_date
-
-    def get_end_date(self):
-        return self._end_date
 
 
     def play_match():

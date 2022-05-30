@@ -10,7 +10,7 @@ qui doivent tous deux être automatiquement remplis lorsque l'utilisateur crée 
 
 Les instances de round doivent être stockées dans une liste sur l'instance de tournoi à laquelle elles appartiennent.
 
-Test
+round1 = Round("1", [match1, match2, match3, match4])
 """
 
 
@@ -35,34 +35,47 @@ class Round:
 
 
     def __repr__(self):
-         return f'{[str(match) for match in self._list_matchs]}'    
+        return f'{[str(match) for match in self._list_matchs]}' 
+     
 
-
-    # setter method
-    def set_name(self, x):
-        self._name = x
-        
-    def set_list_matchs(self, x):
-        self._list_matchs = x         
-
-    def set_start_date(self, x):
-        self._start_date = x
-        
-    def set_end_date(self, x):
-        self._end_date = x 
 
     # get method
-    def get_name(self):
+    @property    
+    def name(self):
         return self._name
-    
-    def get_list_matchs(self):
+
+    @property    
+    def list_matchs(self):
         return self._list_matchs    
-  
-    def get_start_date(self):
+
+    @property
+    def start_date(self):
         return self._start_date
-    
-    def get_end_date(self):
+
+    @property
+    def end_date(self):
         return self._end_date
+    
+
+    # setter method
+    @name.setter 
+    def name(self, x):
+        self._name = x
+
+    @list_matchs.setter         
+    def list_matchs(self, x):
+        self._list_matchs = x         
+
+    @start_date.setter 
+    def start_date(self, x):
+        self._start_date = x
+
+    @end_date.setter 
+    def end_date(self, x):
+        self._end_date = x 
+        
+
+    # others methods
 
     def next_round(self):
         pass    

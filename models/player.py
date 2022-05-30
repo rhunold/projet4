@@ -1,11 +1,12 @@
 from datetime import datetime
+from wsgiref import validate
 
 class Player:
     """Player Model"""
 
     def __init__(self, name, first_name, birthdate, sex, rank, played_with, tournament_score=0):
-        self._name = name
-        self._first_name = first_name
+        self._name = name.capitalize()
+        self._first_name = first_name.capitalize()
         self._birthdate = birthdate
         self._sex = sex
         
@@ -30,57 +31,76 @@ class Player:
     def __repr__(self):
         return f"{self._first_name} {self._name}"
 
-    # setter method
-    def set_name(self, x):
-        self._name = x
-        
-    def set_first_name(self, x):
-        self._first_name = x
-
-        
-    def set_birthdate(self, x):
-        self._birthdate = x
-        try:
-            datetime.strptime(self.get_birthdate(), '%d-%m-%Y')
-        except ValueError:
-            raise ValueError("Mauvais format, le bon format est JJ-MM-AAAA")
-    
-        
-    def set_sex(self, x):
-        self._sex= x
-    
-    def set_rank(self, x):
-        self._rank = x
-        
-    def set_tournament_score(self, x):
-        self._tournament_score = x
-        
-    def set_played_with(self, x):
-        self._played_with = x           
-
     # get method
-    def get_name(self):
+    @property 
+    def name(self):
         return self._name
-    
-    def get_first_name(self):
+
+    @property 
+    def first_name(self):
         return self._first_name 
-      
-    def get_birthdate(self):
+
+    @property 
+    def birthdate(self):
         return self._birthdate
 
-    def get_sex(self):
+    @property 
+    def sex(self):
         return self._sex
 
-    def get_rank(self):
+    @property
+    def rank(self):
         return self._rank
-    
-    def get_played_with(self):
+
+    @property
+    def played_with(self):
         return self._played_with     
-    
-    def get_tournament_score(self):
+
+    @property
+    def tournament_score(self):
         return self._tournament_score
+
+    # setter method
+    @name.setter     
+    def name(self, x):
+        self._name= x
+        
+    @first_name.setter     
+    def first_name(self, x):
+        self._first_name= x        
+
+    @sex.setter     
+    def sex(self, x):
+        self._sex= x
     
+    @rank.setter  
+    def rank(self, x):
+        self._rank = x
     
+    @tournament_score.setter     
+    def tournament_score(self, x):
+        self._tournament_score = x
+    
+    @played_with.setter   
+    def played_with(self, x):
+        self._played_with = x           
+
+    @birthdate.setter    
+    def birthdate(self, x):
+        self._birthdate = x 
+        
+        # Vérifier format de la date de naissance      
+        try:
+            datetime.strptime(self.birthdate, '%d-%m-%Y')
+            print('Bon format de date')
+        except ValueError: 
+            # raise ValueError("Mauvais format de date")
+            self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
+            
+            print('Mauvais format, le bon format est JJ-MM-AAAA')
+
+
+    # others methods
 
     # serialization
     def serialized(self):
