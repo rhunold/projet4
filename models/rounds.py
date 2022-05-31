@@ -1,5 +1,7 @@
 from controllers.time import get_timestamp
 
+
+
 """
 En plus de la liste des correspondances, chaque instance du tour doit contenir un champ de nom.
 
@@ -18,28 +20,29 @@ class Round:
     """Round Model"""
 
     def __init__(self, name, list_matchs):
-        self._name = name
+        self._name = "Round " + str(name)
         self._list_matchs = list_matchs # c'est une list avec les instances de match [match1, match2, ...]
         self._start_date = get_timestamp()
         self._end_date = ""
 
-        # self._round_number = round_number # len de list_matchs
+        # self._round_number = len(list_matchs)
         # self._active_round = False     
                         
   
     def __str__(self):
         return (
-            f'Round {self._name}, '
+            f'{self._name}'
             f'{[str(match) for match in self._list_matchs]}'
+                        
             )
 
 
-    # def __repr__(self):
-    #     return f'{[str(match) for match in self._list_matchs]}' 
-     
     def __repr__(self):
         display_repr = (
-            f'Round({self._name}, {[str(match) for match in self._list_matchs]}'
+            # f'({self._name}, {[str(match) for match in self._list_matchs]})'
+            
+            f'Round("{self._name}",'
+            f'{[str(match) for match in self._list_matchs]})'
         )
         return display_repr 
 
@@ -92,4 +95,4 @@ class Round:
     def unserialized(self):
         pass      
 
-
+ 

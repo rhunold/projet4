@@ -1,20 +1,22 @@
 from controllers.time import get_timestamp
 
 
+
 class Tournament:
     """Tournament Model"""    
     
-    def __init__(self, name, description, end_date, location, round_number, list_rounds, list_players, time_control):
+    def __init__(self, name, description, start_date, end_date, location, round_number, list_rounds, list_players, time_control):
         self._name = name
         self._description = description
-        self._end_date = "Pas encore terminé"
+        self._start_date = start_date #get_timestamp()          
+        self._end_date = end_date
         self._location = location
         self._round_number = round_number
         # self._active_round = active_round        
         self._list_rounds = list_rounds
         self._list_players = list_players   
         self._time_control = time_control  
-        self._start_date = get_timestamp()            
+          
         
     def __str__(self):
         return (
@@ -32,6 +34,20 @@ class Tournament:
     
     
     def __repr__(self):
+        return (
+            # f'{[str(rounds) for rounds in self._list_rounds]}'
+            
+            f'Tournament("{self._name}",'
+            f'"{self._description}",'
+            f'"{self._start_date}",'
+            f'"{self._end_date}",'
+            f'"{self._location}",'
+            f'{self._round_number},'
+            f'{[str(rounds) for rounds in self._list_rounds]},'
+            f'{self._list_players},'
+            f'{self._time_control})'
+        )        
+        
         return (f'{[str(rounds) for rounds in self._list_rounds]}')
 
    # get method
@@ -83,17 +99,21 @@ class Tournament:
     def add_participant():
         pass # append player indice too the list
   
+  
+    def create_round(self, round_number):  
+        pass
+        
 
-    def run_rounds(self, round_number):
+    # def run_rounds(self, round_number):
 
-        if round_number == 1:
-            # on range les joueurs par classement et on divise en 2 groupes (plus forts/moins fort. 
-            # Ensuite on prend le 1 et le 5, le 2 et le 6, le 3 et le 7, le 4 et le 8ème joueur)        
-            print("Round 1")
-        else :
-            # Algo suisse
-            for rounds in self.list_rounds:        
-                print("Rounds 2, 3 ...")
+    #     if round_number == 1:
+    #         # on range les joueurs par classement et on divise en 2 groupes (plus forts/moins fort. 
+    #         # Ensuite on prend le 1 et le 5, le 2 et le 6, le 3 et le 7, le 4 et le 8ème joueur)        
+    #         print("Round 1")
+    #     else :
+    #         # Algo suisse
+    #         for rounds in self.list_rounds:        
+    #             print("Rounds 2, 3 ...")
 
         
 

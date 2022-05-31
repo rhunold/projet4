@@ -1,10 +1,11 @@
 from datetime import datetime
-from wsgiref import validate
+
 
 class Player:
     """Player Model"""
 
-    def __init__(self, name, first_name, birthdate, sex, rank, played_with, tournament_score=0):
+    def __init__(self, player_id, name, first_name, birthdate, sex, rank):
+        self._player_id = player_id
         self._name = name.capitalize()
         self._first_name = first_name.capitalize()
         self._birthdate = birthdate
@@ -12,39 +13,33 @@ class Player:
         
         # Attribus que l'on va manipuler
         self._rank = rank
-        self._played_with = played_with # on indique la liste des joueurs avec qui il a joué durant le tournoi
-        self._tournament_score = tournament_score # Score cumulé en cours enregistrable
+        # self._played_with = played_with # on indique la liste des joueurs avec qui il a joué durant le tournoi
+        # self._tournament_score = tournament_score # Score cumulé en cours enregistrable
+
 
     def __str__(self):
-        return f"{self._first_name} {self._name} a {self._tournament_score} points dans le tournoi."
-    
-    def __str__(self):
         str = (
-            f'{self._first_name} {self._name}\n'
-            f'Score du tournoi : {self._tournament_score}\n'
-            f'Classement : {self._rank}\n'
-            f'Liste Joueurs avec qui déjà joué : {self._played_with}\n'
-            f'Naissance : {self._birthdate}\n'
+            f'{self._first_name} {self._name}'
             )
         return str    
     
     def __repr__(self):
         display_repr = (
-            f'{self._first_name} {self._name}'
-            
-            # f'Player('
-            # f'"{self._name}", '
-            # f'"{self._first_name}", '
-            # f'"{self._birthdate}", '   
-            # f'"{self.sex}", ' 
-            # f'{self._rank}, '
-            # f'{self._played_with}, '
-            # f'{self._tournament_score})'
+            # f'{self._first_name} {self._name}'
+            f'Player("{self._name}",'
+            f'"{self._first_name}",'
+            f'"{self._birthdate}",'   
+            f'"{self.sex}",' 
+            f'{self._rank})'
         )
         
         return display_repr
 
     # get method
+    @property 
+    def player_id(self):
+        return self._player_id
+        
     @property 
     def name(self):
         return self._name
@@ -65,15 +60,13 @@ class Player:
     def rank(self):
         return self._rank
 
-    @property
-    def played_with(self):
-        return self._played_with     
-
-    @property
-    def tournament_score(self):
-        return self._tournament_score
-
     # setter method
+    
+    @player_id.setter     
+    def player_id(self, x):
+        self._player_id= x
+        
+            
     @name.setter     
     def name(self, x):
         self._name= x
@@ -89,28 +82,21 @@ class Player:
     @rank.setter  
     def rank(self, x):
         self._rank = x
-    
-    @tournament_score.setter     
-    def tournament_score(self, x):
-        self._tournament_score = x
-    
-    @played_with.setter   
-    def played_with(self, x):
-        self._played_with = x           
+             
 
     @birthdate.setter    
     def birthdate(self, x):
         self._birthdate = x 
         
-        # Vérifier format de la date de naissance      
-        try:
-            datetime.strptime(self.birthdate, '%d-%m-%Y')
-            print('Bon format de date')
-        except ValueError: 
-            # raise ValueError("Mauvais format de date")
-            self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
+        # # Vérifier format de la date de naissance      
+        # try:
+        #     datetime.strptime(self.birthdate, '%d-%m-%Y')
+        #     print('Bon format de date')
+        # except ValueError: 
+        #     # raise ValueError("Mauvais format de date")
+        #     self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
             
-            print('Mauvais format, le bon format est JJ-MM-AAAA')
+        #     print('Mauvais format, le bon format est JJ-MM-AAAA')
 
 
     # others methods
@@ -121,10 +107,5 @@ class Player:
     
     def unserialized(self):
         pass      
-
-
-
-
-
 
 
