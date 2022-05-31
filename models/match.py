@@ -106,17 +106,16 @@ class Match:
     #     return score
     
     def play_match(self):
-        scores = [0, 1, 0.5]     
+        scores = [0, 1.0, 0.5]     
         self._score_player1 = random.choice(scores) 
-        self._score_player2 = random.choice(scores) 
+        # self._score_player2 = random.choice(scores) 
 
-        if self._score_player1 == 1:
-            self.score_player1 += 1
-        elif self._score_player2 == 1:
-            self.score_player2 += 1
+        if self._score_player1 == 0:
+            self.score_player2 = 1
+        elif self._score_player1 == 0.5:
+            self.score_player2 += 0.5            
         else:
-            self.score_player1 += 0.5
-            self.score_player2 += 0.5
+            self.score_player2 = 0
 
         # self.player1.tournament_score += self.score_player1
         # self.player2.tournament_score += self.score_player2        
