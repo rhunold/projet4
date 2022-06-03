@@ -3,73 +3,73 @@ import random
 
 from models.player import Player
 from models.match import Match
-from models.rounds import Round
+from models.tour import Tour
 from models.tournament import Tournament
 
+from database import *
+# match = Match(1, 5, 0.5, 0.5)
 
-# Instanciations
-raphael = Player(1,"hunold","raphael","04-04-1977","Homme",1)
-thea = Player(2,"Hunold","Théa","14-06-2015","Femme",8)
-gabriel = Player(3,"Hunold","Gabriel","11-07-1978","Homme",6)
-aloise = Player(4,"Hunold","Aloise","31-01-1980","Femme",8)
-francis = Player(5,"Hunold","Francis","12-12-1943","Homme",2)
-flora = Player(6,"Hunold","Flora","12-08-1980","Femme",10)
-christine = Player(7,"Hunold","Christine","12-12-1953","Femme",14)
-stephane = Player(8,"Hunold","Stephane","12-12-1973","Homme",9)
-
-players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane]
-
-
-
-match1 = Match((raphael,thea))
-match2 = Match((gabriel,aloise))
-match3 = Match((francis,flora))
-match4 = Match((christine,stephane))
-
-# match1 = Match(player_pair())
-# match2 = Match(player_pair())
-# match3 = Match(player_pair())
-# match4 = Match(player_pair())
-
-
-# match1 = Match(([player1,0],[player2,1])) # winner = player2
-# match2 = Match(([player1,1],[player2,0])) # winner = player1
-# match3 = Match(([player1,0.5],[player2,0.5])) # egalité
-# match4 = Match(([player1,0],[player2,0])) # match pas encore joué
-
-round1 = Round(1,[match1,match2,match3,match4])
-round2 = Round(2,[match2,match4,match3,match1])
-
-
-tournament1 = Tournament("Grand tour été 2022", "Cela va être super !!!", 
-                         "30-05-2022 14:55:34", "30-05-2022 18:55:34", 
-                         "Lyon", 2, 
-                         [round1,round2], 
-                         [raphael,thea, francis,
-                          aloise,gabriel,christine, 
-                          flora, stephane],
-                         "Bullet")
 
 def main():
+    
+    
+    
 
-    print("########### Joueur1 #############")
-    print(raphael)
+    # On génère le 1er tour si aucun tour n'est dans la liste
+    if list_tours == []:
+
+        sort_players_by_rank = sorted(list_players, key=lambda x: x.rank, reverse=False)
+        
+        # Vérifier que l'on a bien un nombre pair de joueur.
+        
+        #initialize the middle index with the length of first half
+        middle=int(len(list_players)/2)
+
+        #Split the list from starting index upto middle index in first half
+        first_players=sort_players_by_rank[:middle]
+        # print(first_players)
+
+        #Split the list from middle index index upto the last index in second half
+        sec_players=sort_players_by_rank[middle:]
+        # print(sec_players)
+    
+        list_matchs = []
+        tour1 = Tour(1, list_matchs)          
+
+        for i, (first_player, sec_player) in enumerate(zip(first_players, sec_players)):
+            # print(repr(first_player), repr(sec_player))
+            player1_id = first_player.player_id
+            player2_id = sec_player.player_id
+            list_matchs.append(Match(player1_id, player2_id, 0, 0))
+        
+        
+        list_tours.append(tour1)
+ 
+
+
+        """Au prochain tour, triez tous les joueurs en fonction de leur nombre total de points. Si plusieurs joueurs ont le même nombre de points, triez-les en fonction de leur rang.
+        4.	Associez le joueur 1 avec le joueur 2, le joueur 3 avec le joueur 4, et ainsi de suite. Si le joueur 1 a déjà joué contre le joueur 2, associez-le plutôt au joueur 3.
+        5.	Répétez les étapes 3 et 4 jusqu'à ce que le tournoi soit terminé.
+        """    
+
+    
+   
+        
+
+    else:
+        pass
+
+
+    # print("########### Joueur1 #############")
+    # print(raphael)
+    # raphael.rank = 10 
+    # print(raphael.rank)    
     # print(random_player1())       
     
-    print("########### Match1 #############")    
+    # print("########### Match1 #############")    
 
-    
-    Match.play_match(match1)
-    print(match1)
-    
-
-    # print("########### Round1 #############")      
-    # print(round1)
-
-
-    # print("########### Tournoi1 #############")    
-    # print(tournament1)
-   # print(repr(tournament1))
+    print(tournament)
+        
 
     # time.sleep(2.5)    
         

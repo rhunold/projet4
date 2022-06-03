@@ -4,17 +4,18 @@ from datetime import datetime
 class Player:
     """Player Model"""
 
-    def __init__(self, player_id, name, first_name, birthdate, sex, rank):
+    def __init__(self, player_id, name, first_name, birthdate, sex, rank, player_score=0):
         self._player_id = player_id
         self._name = name.capitalize()
         self._first_name = first_name.capitalize()
         self._birthdate = birthdate
         self._sex = sex
+        self._player_score = player_score
         
         # Attribus que l'on va manipuler
         self._rank = rank
         # self._played_with = played_with # on indique la liste des joueurs avec qui il a joué durant le tournoi
-        # self._tournament_score = tournament_score # Score cumulé en cours enregistrable
+
 
 
     def __str__(self):
@@ -24,16 +25,18 @@ class Player:
         return str    
     
     def __repr__(self):
-        display_repr = (
+        player = (
             # f'{self._first_name} {self._name}'
-            f'Player("{self._name}",'
+            f'Player("{self._player_id}",'
+            f'"{self._name}",'            
             f'"{self._first_name}",'
             f'"{self._birthdate}",'   
             f'"{self.sex}",' 
-            f'{self._rank})'
+            f'{self._rank},'
+            f'{self._player_score})'                
         )
         
-        return display_repr
+        return player
 
     # get method
     @property 
@@ -59,6 +62,10 @@ class Player:
     @property
     def rank(self):
         return self._rank
+    
+    @property
+    def player_score(self):
+        return self._player_score   
 
     # setter method
     
@@ -81,7 +88,14 @@ class Player:
     
     @rank.setter  
     def rank(self, x):
-        self._rank = x
+        
+        if isinstance(x, int) == False:
+            print("Il faut un chiffre pour le classement.")
+                        
+        elif x <= 0:
+            print("Il faut un chiffre supérieur à 0.")                   
+        else :
+            self._rank = x
              
 
     @birthdate.setter    
@@ -98,7 +112,14 @@ class Player:
             
         #     print('Mauvais format, le bon format est JJ-MM-AAAA')
 
+    # @tournament_score.setter     
+    # def tournament_score(self, x):
+    #     self._tournament_score= x
 
+
+    @player_score.setter     
+    def player_score(self, x):
+        self._player_score= x
     # others methods
 
     # serialization
@@ -107,5 +128,6 @@ class Player:
     
     def unserialized(self):
         pass      
+
 
 

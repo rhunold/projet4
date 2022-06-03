@@ -1,6 +1,5 @@
-from controllers.time import get_timestamp
+# from controllers.time import get_timestamp
 import random
-
 
 
 """
@@ -15,51 +14,55 @@ Les matchs multiples doivent être stockés sous forme de liste sur l'instance d
 # output = ([Player("Hunold", "Raphael", "03/04/1977", "Homme", 1), 0], [Player("Hunold", "Théa", "14/06/2015", "Femme", , 3), 1])
 
 
-
-
 class Match:
     """Match Model"""
 
-    def __init__(self, player_pair):
-        self._player1 = player_pair[0]
-        self._player2 = player_pair[1]
-        self._score_player1 = 0
-        self._score_player2 = 0
+    def __init__(self, player1_id, player2_id, player1_score, player2_score):
+        self._match_pair = ([player1_id, player1_score], [player2_id, player2_score])
+        self._player1_id = player1_id
+        self._player2_id = player2_id
+        self._player1_score = player1_score
+        self._player2_score = player2_score
+        
+        
+        # self._match_id = 
+
         # self._start_date = get_timestamp()
-        # self._end_date = ""        
+        self._end_date = ""        
         # self._winner = ""                            
 
     def __str__(self):
-        return f'{self._player1} : { self._score_player1}  vs {self._player2} : { self._score_player2}'
+        # return f'{self.player1_id} : { self.player1_score}  vs {self.player2_id} : { self._player2_score}'
+        return f'{self._match_pair}'
 
 
     def __repr__(self):
-        display_repr = (
+        match = (
             # f'{self._player1} vs {self._player2}'
             
-            f'Match("{self._player1}",'
-            f'{self._score_player1},'
-            f'"{self._player2}",'
-            f'{self._score_player2})'        
+            f'Match("{self._player1_id}",'
+            f'{self._player1_score},'
+            f'"{self._player2_id}",'
+            f'{self._player2_score})'        
         )
-        return display_repr    
+        return match    
 
     # get method
     @property
-    def player1(self):
-        return self._player1
+    def player1_id(self):
+        return self._player1_id
 
     @property
-    def player2(self):
-        return self._player2
+    def player2_id(self):
+        return self._player2_id
     
     @property
-    def score_player1(self):
-        return self._score_player1
+    def player1_score(self):
+        return self._player1_score
     
     @property
-    def score_player2(self):
-        return self._score_player2
+    def player2_score(self):
+        return self._player2_score
     
     
 
@@ -75,21 +78,22 @@ class Match:
     #     return self._end_date
 
     # setter method
-    @player1.setter          
-    def player1(self, x):
-        self._player1 = x
+    @player1_id.setter          
+    def player1_id(self, x):
+        self._player1_id = x
 
-    @player2.setter 
-    def player2(self, x):
-        self._player2 = x
+    @player2_id.setter 
+    def player2_id(self, x):
+        self._player2_id = x
         
-    @score_player1.setter 
-    def score_player1(self, x):
-        self._score_player1 = x
+    @player1_score.setter 
+    def player1_score(self, x):
+        self._player1_score = x
+        # On ajoute les points du match à ceux du tournoi
         
-    @score_player2.setter 
-    def score_player2(self, x):
-        self._score_player2 = x   
+    @player2_score.setter 
+    def player2_score(self, x):
+        self._player2_score = x
 
     # @winner.setter     
     # def winner(self, x):
@@ -104,27 +108,23 @@ class Match:
     #     scores = [0, 1, 0.5]        
     #     score = random.choices([score for score in scores], k = 1) 
     #     return score
-    
+
+
     def play_match(self):
-        scores = [0, 1.0, 0.5]     
-        self._score_player1 = random.choice(scores) 
+        scores = [0, 1.0, 0.5]
+        self._player1_score = random.choice(scores) 
         # self._score_player2 = random.choice(scores) 
 
-        if self._score_player1 == 0:
-            self.score_player2 = 1
-        elif self._score_player1 == 0.5:
-            self.score_player2 += 0.5            
+        if self._player1_score == 0:
+            self._player2_score = 1
+        elif self._player1_score == 0.5:
+            self._player2_score += 0.5            
         else:
-            self.score_player2 = 0
+            self._player2_score = 0
 
-        # self.player1.tournament_score += self.score_player1
-        # self.player2.tournament_score += self.score_player2        
+        # self.player1.tournament_score += self.player1_score
+        # self.player2.tournament_score += self.player2_score    
 
-
-    # def player_pair():
-    #     player_pair = (random_player(), random_player())
-    #     # player_pair = (top_player(), bottom_player())    
-    #     return player_pair
 
 
 
@@ -134,9 +134,6 @@ class Match:
     
     def unserialized(self):
         pass      
-
-
-
 
 
 

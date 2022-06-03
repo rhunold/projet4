@@ -1,40 +1,54 @@
-from controllers.time import get_timestamp
+# from controllers.time import get_timestamp
 
+# from tour import Tour
+# from player import Player
+# from match import Match
 
 
 class Tournament:
     """Tournament Model"""    
     
-    def __init__(self, name, description, start_date, end_date, location, round_number, list_rounds, list_players, time_control):
+    def __init__(self, name, description, start_date, end_date, location, tour_number=4, time_control="", list_tours=None, list_players=None):
         self._name = name
         self._description = description
         self._start_date = start_date #get_timestamp()          
         self._end_date = end_date
         self._location = location
-        self._round_number = round_number
-        # self._active_round = active_round        
-        self._list_rounds = list_rounds
+        self._tour_number = tour_number
+        self._time_control = time_control        
+        self._list_tours = list_tours
         self._list_players = list_players   
-        self._time_control = time_control  
-          
+ 
+        # self._tournament_id = tournament_id  
+        # self._active_round = active_round
+        
+        if list_tours is None: 
+            self._list_tours = []
+            # print("Il faut vérfier que ")
+            
+            
+        if list_players is None: 
+            self._list_players= []
+
+
         
     def __str__(self):
         return (
             f'Tournoi : {self._name}\n'
             f'Description : {self._description}\n'
-            f'Start Date : {self._start_date}\n'
-            f'End Date : {self._end_date}\n'
-            f'Location : {self._location}\n'
-            f'Number of Round : {self._round_number}\n'
-            f'Rounds List : {[str(rounds) for rounds in self._list_rounds]}\n'
-            f'Players List : {self._list_players}\n'
-            f'Time Control : {self._time_control}\n'
+            f'Date de début : {self._start_date}\n'
+            f'Date de fin : {self._end_date}\n'
             f'Lieu : {self._location}\n'
+            f'Nombre de rounds : {self._tour_number}\n'
+            f'Time Control : {self._time_control}\n'            
+            f'Liste des rounds : {[str(tour) for tour in self._list_tours]}\n'
+            f'Liste des joueurs : {self._list_players}\n'
+
         )
     
     
     def __repr__(self):
-        return (
+        tournament = (
             # f'{[str(rounds) for rounds in self._list_rounds]}'
             
             f'Tournament("{self._name}",'
@@ -42,13 +56,14 @@ class Tournament:
             f'"{self._start_date}",'
             f'"{self._end_date}",'
             f'"{self._location}",'
-            f'{self._round_number},'
-            f'{[str(rounds) for rounds in self._list_rounds]},'
-            f'{self._list_players},'
-            f'{self._time_control})'
+            f'{self._tour_number},'
+            f'{self._time_control},'            
+            f'{[str(tour) for tour in self._list_tours]},'
+            f'{self._list_players})'
+
         )        
         
-        return (f'{[str(rounds) for rounds in self._list_rounds]}')
+        return tournament
 
    # get method
     @property
@@ -68,9 +83,16 @@ class Tournament:
         return self._description
 
     @property     
-    def round_number(self):
-        return self._round_number
+    def tour_number(self):
+        return self._tour_number
+    
+    @property     
+    def list_tours(self):
+        return self._list_tours  
 
+    @property
+    def list_players(self):
+        return self._list_players
 
     # setter method
     @name.setter
@@ -89,31 +111,39 @@ class Tournament:
     def end_date(self, x):
         self._end_date = x        
 
-    @round_number.setter
+    @tour_number.setter
     def round_number(self, x):
-        self._round_number = x
-
- 
+        self._tour_number = x
+              
+    @list_tours.setter
+    def list_tours(self, x):
+        self._list_tours = x
+        
+    @list_players.setter
+    def list_players(self, x):
+        self._list_players = x        
 
     # Other methods
-    def add_participant():
+    def add_player(self, player):
+        # self._list_players= [] #indiqué en haut
         pass # append player indice too the list
   
+
+    # def sort_players_by_rank(self):
+    #     sort_players_by_rank = sorted(self.list_players, key=lambda x: x.rank, reverse=False)
+    #     return sort_players_by_rank
+
+
+        
+
+
+
+
+        
+        # print("On refait un liste vs score du round 1 (départage par classemnt si egalité)")
+        # players.sort(key=lambda x: x.tournament_score, reverse=True)
+        # print(players)        
+
+
+
   
-    def create_round(self, round_number):  
-        pass
-        
-
-    # def run_rounds(self, round_number):
-
-    #     if round_number == 1:
-    #         # on range les joueurs par classement et on divise en 2 groupes (plus forts/moins fort. 
-    #         # Ensuite on prend le 1 et le 5, le 2 et le 6, le 3 et le 7, le 4 et le 8ème joueur)        
-    #         print("Round 1")
-    #     else :
-    #         # Algo suisse
-    #         for rounds in self.list_rounds:        
-    #             print("Rounds 2, 3 ...")
-
-        
-
