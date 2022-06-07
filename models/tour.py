@@ -1,6 +1,6 @@
 from controllers.time import get_timestamp
 
-# from models.match import Match
+from models.match import Match
 
 # from models.tournament import Tournament
 # from models.player import Player
@@ -25,15 +25,22 @@ tour1 = Tour("1", [Match(raphael, thea), Match(gabriel, francis)])
 class Tour():
     """Round Model"""
 
-    def __init__(self, name, list_matchs):
+    def __init__(self, name, list_matchs=None):
         self._name = "Round " + str(name)
-        self._list_matchs = list_matchs # c'est une list avec les instances de match [match1, match2, ...]
+        if list_matchs is None: 
+            self._list_matchs= []
+        else:
+            self._list_matchs= list_matchs  
+        
         self._start_date_and_hour = get_timestamp()
         self._end_date_and_hour = "0"
-        # self._tour_id = 0
 
+       
+        
+        # self._tour_id = 0
         # self._round_number = len(list_matchs)
-        # self._active_round = False     
+        # self._active_round = False 
+            
                         
   
     def __str__(self):
@@ -103,8 +110,6 @@ class Tour():
     # others methods
 
 
-
-
     # def create_matchs(self):
     #     matchs = []
     #     for i in self.list_matchs:
@@ -118,32 +123,6 @@ class Tour():
     #     for match in self.matchs:
     #         match.end_match()
 
-
-
-    # def create_round(self, tour_number):  
-    #     pass
-    #     current_round = 0
-
-    #     if len(self._list_tours) == 0:
-    #         print("On récupére la liste des joueurs et tri vs classement en 2 part, puis apparareillement") 
-        
-    #     while len(self._list_tours) >= 1:
-    #         print("Round 2 et plus") 
-    #         pass         
-        
-
-    # def run_rounds(self, round_number):
-
-    #     if round_number == 1:
-    #         # on range les joueurs par classement et on divise en 2 groupes (plus forts/moins fort. 
-    #         # Ensuite on prend le 1 et le 5, le 2 et le 6, le 3 et le 7, le 4 et le 8ème joueur)        
-    #         print("Round 1")
-    #     else :
-    #         # Algo suisse
-    #         for rounds in self.list_rounds:        
-    #             print("Rounds 2, 3 ...")
-
-        
 
 
 

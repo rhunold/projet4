@@ -4,7 +4,7 @@ from datetime import datetime
 class Player:
     """Player Model"""
 
-    def __init__(self, player_id, name, first_name, birthdate, sex, rank, player_score=0):
+    def __init__(self, player_id="", name="", first_name="", birthdate="", sex="", rank=0, player_score=0):
         self._player_id = player_id
         self._name = name.capitalize()
         self._first_name = first_name.capitalize()
@@ -102,19 +102,15 @@ class Player:
     def birthdate(self, x):
         self._birthdate = x 
         
-        # # Vérifier format de la date de naissance      
-        # try:
-        #     datetime.strptime(self.birthdate, '%d-%m-%Y')
-        #     print('Bon format de date')
-        # except ValueError: 
-        #     # raise ValueError("Mauvais format de date")
-        #     self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
+        # Vérifier format de la date de naissance      
+        try:
+            datetime.strptime(self.birthdate, '%d-%m-%Y')
+            # print('Bon format de date')
+        except ValueError: 
+            # raise ValueError("Mauvais format de date")
+            self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
             
-        #     print('Mauvais format, le bon format est JJ-MM-AAAA')
-
-    # @tournament_score.setter     
-    # def tournament_score(self, x):
-    #     self._tournament_score= x
+            print('Mauvais format, le bon format est JJ-MM-AAAA')
 
 
     @player_score.setter     

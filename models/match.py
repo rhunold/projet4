@@ -1,4 +1,4 @@
-# from controllers.time import get_timestamp
+from controllers.time import get_timestamp
 import random
 
 
@@ -17,7 +17,7 @@ Les matchs multiples doivent être stockés sous forme de liste sur l'instance d
 class Match:
     """Match Model"""
 
-    def __init__(self, player1_id, player2_id, player1_score, player2_score):
+    def __init__(self, player1_id, player2_id, player1_score=0, player2_score=0):
         self._match_pair = ([player1_id, player1_score], [player2_id, player2_score])
         self._player1_id = player1_id
         self._player2_id = player2_id
