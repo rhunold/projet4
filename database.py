@@ -1,7 +1,8 @@
 from models.player import Player
-from models.match import Match
-from models.tour import Tour
-from models.tournament import Tournament
+# from models.match import Match
+# from models.tour import Tour
+# from models.tournament import Tournament
+
 
 raphael = Player(1,"hunold","raphael","04-04-1977","Homme",1, 0)
 thea = Player(2,"Hunold","Théa","14-06-2015","Femme",5, 0)
@@ -12,9 +13,9 @@ flora = Player(6,"Hunold","Flora","12-08-1980","Femme",10, 0)
 christine = Player(7,"Hunold","Christine","12-12-1953","Femme",10, 0)
 stephane = Player(8,"Hunold","Stephane","12-12-1973","Homme",9, 0)
 
-list_players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane]
+# list_participants = [] # liste des joueurs du tournoi
 
-
+list_players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane] # liste de tous les joueurs
 
 
 # match0 = Match((raphael,thea))
@@ -32,13 +33,13 @@ list_players = [raphael, thea, gabriel, aloise, francis, flora, christine, steph
 
 
 # list_tours = [tour0, tour1, tour2, tour3]
-list_tours = []
+# list_tours = []
 
 # scores = ([player1, score_player1], [player2, score_player2])
 
-tournament = Tournament("Grand tournoi rentrée 2022", "Welcome !!!", 
-                         "30-09-2022 14:55:34", "Pas encore terminé", 
-                         "Lyon", 2, "Bullet", list_tours, list_players)
+# tournament = Tournament("Grand tournoi rentrée 2022", "Welcome !!!", 
+#                          "30-09-2022 14:55:34", "Pas encore terminé", 
+#                          "Lyon", 2, "Bullet", list_tours, list_players)
 
 
 # tournament = Tournament("Grand tour été 2022", "Cela va être super !!!", 
