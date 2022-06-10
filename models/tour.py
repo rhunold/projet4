@@ -24,9 +24,13 @@ tour1 = Tour("1", [Match(raphael, thea), Match(gabriel, francis)])
 
 class Tour():
     """Round Model"""
-
-    def __init__(self, name, list_matchs=None):
-        self._name = "Round " + str(name)
+    class_counter= 1
+    
+    def __init__(self, list_matchs=None):
+        # self._name = "Round " + str(name)
+        self._id= Tour.class_counter
+        Tour.class_counter += 1        
+        
         if list_matchs is None: 
             self._list_matchs= []
         else:
@@ -45,12 +49,12 @@ class Tour():
   
     def __str__(self):
         return (
-            f'{self._name},'
+            f'Round {self._id},'
             f'{[str(match) for match in self._list_matchs]},'
             f'{self._start_date_and_hour},'
             f'{self._end_date_and_hour}'              
 
-            # f'Roundssssss("{self._name}",'
+            # f'Roundssssss("{self._id}",'
 
             # f'{[str(match) for match in self._list_matchs]},'
             # f'"{self._start_date_and_hour}",'
@@ -63,7 +67,7 @@ class Tour():
         tour = (
             # f'({self._name}, {[str(match) for match in self._list_matchs]})'
             
-            f'Round ("{self._name}",'
+            f'Round ("{self._id}",'
 
             f'{[str(match) for match in self._list_matchs]},'
             f'"{self._start_date_and_hour}",'
@@ -73,8 +77,8 @@ class Tour():
 
     # get method
     @property    
-    def name(self):
-        return self._name
+    def id(self):
+        return self._id
 
     @property    
     def list_matchs(self):
@@ -90,9 +94,9 @@ class Tour():
     
 
     # setter method
-    @name.setter 
-    def name(self, x):
-        self._name = x
+    @id.setter 
+    def id(self, x):
+        self._id = x
 
     @list_matchs.setter         
     def list_matchs(self, x):
@@ -110,18 +114,7 @@ class Tour():
     # others methods
 
 
-    # def create_matchs(self):
-    #     matchs = []
-    #     for i in self.list_matchs:
-    #         matchs.append(Match(i))
-    #     return matchs   
 
-    # def mark_as_complete(self):
-    #     # self.end_date = get_timestamp()
-    #     print(f"{self.end_date} : {self.name} terminé.")
-    #     print("Entrer les résultats des matchs:")
-    #     for match in self.matchs:
-    #         match.end_match()
 
 
 

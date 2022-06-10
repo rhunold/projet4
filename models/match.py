@@ -1,5 +1,7 @@
-from controllers.time import get_timestamp
 import random
+
+from controllers.time import get_timestamp
+
 
 
 """
@@ -10,14 +12,15 @@ Les matchs multiples doivent être stockés sous forme de liste sur l'instance d
 
 # format du tuple
 # player_pair = ([], []) => player_pair = (player1, player2)
-# scores = ([player1, score_player1], [player2, score_player2])
+# scores = ([player1, score_player1]
+# , [player2, score_player2])
 # output = ([Player("Hunold", "Raphael", "03/04/1977", "Homme", 1), 0], [Player("Hunold", "Théa", "14/06/2015", "Femme", , 3), 1])
 
 
 class Match:
     """Match Model"""
 
-    def __init__(self, player1_id, player2_id, player1_score=0, player2_score=0):
+    def __init__(self, player1_id=0, player2_id=0, player1_score=0, player2_score=0):
         self._match_pair = ([player1_id, player1_score], [player2_id, player2_score])
         self._player1_id = player1_id
         self._player2_id = player2_id
@@ -26,7 +29,6 @@ class Match:
         
         
         # self._match_id = 
-
         # self._start_date = get_timestamp()
         self._end_date = ""        
         # self._winner = ""                            
@@ -110,21 +112,45 @@ class Match:
     #     return score
 
 
+
     def play_match(self):
-        scores = [0, 1.0, 0.5]
-        self._player1_score = random.choice(scores) 
-        # self._score_player2 = random.choice(scores) 
-
-        if self._player1_score == 0:
+        scores = [0, 1, 0.5]
+        player2_score = 0 #init
+                
+        # Mode random score
+        # player1_score = random.choice(scores) 
+        
+        # Mode saisie manuelle des scores
+        player1_score = float(input("Quel est le score du joueur 1 (0, 1 ou 0.5) ?"))
+        
+        if player1_score == 0:        
             self._player2_score = 1
-        elif self._player1_score == 0.5:
-            self._player2_score += 0.5            
+
+        elif player1_score == 1: 
+            self._player1_score = 1
+          
+        elif player1_score == 0.5:
+            self._player2_score = 0.5
+            self._player1_score = 0.5
+        
+       
         else:
-            self._player2_score = 0
+            print("Try again")  
+                     
 
-        # self.player1.tournament_score += self.player1_score
-        # self.player2.tournament_score += self.player2_score    
+        # print(f"Points gagnés lors du match par le joueur {self._player1_id} : {self._player1_score}")
+        # print(f"Points gagnés lors du match par le joueur {self._player2_id} : {self._player2_score}")   
+        
+        # Permet de changer le score...sinon ça veut pas.
+        self._match_pair = ([self._player1_id, self._player1_score], [self._player2_id, self._player2_score])     
+        
+        # return ({player1_score}, {player2_score})
 
+        # player1_player_score += self._player1_score
+
+    # def add_score_to_participant(self):
+    #     pass
+    
 
 
 

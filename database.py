@@ -1,6 +1,6 @@
 from models.player import Player
-# from models.match import Match
-# from models.tour import Tour
+from models.match import Match
+from models.tour import Tour
 # from models.tournament import Tournament
 
 
@@ -18,10 +18,14 @@ stephane = Player(8,"Hunold","Stephane","12-12-1973","Homme",9, 0)
 list_players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane] # liste de tous les joueurs
 
 
-# match0 = Match((raphael,thea))
-# match1 = Match((gabriel,aloise))
-# match2 = Match((francis,flora))
-# match3 = Match((christine,stephane))
+# match0 = Match((raphael,thea, 0, 1))
+# match1 = Match((gabriel,aloise, 0, 1))
+# match2 = Match((francis,flora, 0, 1))
+# match3 = Match((christine,stephane, 0, 1))
+
+# match = Match((raphael,thea))
+
+# list_matchs = []
 
 # list_matchs = [match0, match1, match2, match3]
 
