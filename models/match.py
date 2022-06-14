@@ -68,17 +68,6 @@ class Match:
     
     
 
-    # @property    
-    # def winner(self):
-    #     return self._winner
-
-    # @property    
-    # def start_date(self):
-    #     return self._start_date
-    # @property
-    # def end_date(self):
-    #     return self._end_date
-
     # setter method
     @player1_id.setter          
     def player1_id(self, x):
@@ -97,19 +86,7 @@ class Match:
     def player2_score(self, x):
         self._player2_score = x
 
-    # @winner.setter     
-    # def winner(self, x):
-    #     self._winner = x
-    #     self._end_date = get_timestamp()
 
-    # @end_date.setter 
-    # def end_date(self, x):
-    #     self._end_date = x   
-
-    # def random_score():  
-    #     scores = [0, 1, 0.5]        
-    #     score = random.choices([score for score in scores], k = 1) 
-    #     return score
 
 
 
@@ -118,10 +95,10 @@ class Match:
         player2_score = 0 #init
                 
         # Mode random score
-        # player1_score = random.choice(scores) 
+        player1_score = random.choice(scores) 
         
         # Mode saisie manuelle des scores
-        player1_score = float(input("Quel est le score du joueur 1 (0, 1 ou 0.5) ?"))
+        # player1_score = float(input("Quel est le score du joueur 1 (0, 1 ou 0.5) ?"))
         
         if player1_score == 0:        
             self._player2_score = 1
@@ -132,21 +109,15 @@ class Match:
         elif player1_score == 0.5:
             self._player2_score = 0.5
             self._player1_score = 0.5
-        
+                   
        
         else:
             print("Try again")  
-                     
-
-        # print(f"Points gagnés lors du match par le joueur {self._player1_id} : {self._player1_score}")
-        # print(f"Points gagnés lors du match par le joueur {self._player2_id} : {self._player2_score}")   
         
         # Permet de changer le score...sinon ça veut pas.
         self._match_pair = ([self._player1_id, self._player1_score], [self._player2_id, self._player2_score])     
         
-        # return ({player1_score}, {player2_score})
 
-        # player1_player_score += self._player1_score
 
     # def add_score_to_participant(self):
     #     pass

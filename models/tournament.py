@@ -147,8 +147,6 @@ class Tournament:
 
 
 
-
-
     # def sort_players_by_rank(self):
     #     sort_players_by_rank = sorted(self.list_players, key=lambda x: x.rank, reverse=False)
     #     return sort_players_by_rank
