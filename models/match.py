@@ -2,19 +2,10 @@ import random
 
 from controllers.time import get_timestamp
 
+from tinydb import TinyDB
 
-
-"""
-Un match unique doit être stocké sous la forme d'un tuple contenant deux listes, chacune contenant deux éléments : une référence à une instance de joueur et un score.
-Les matchs multiples doivent être stockés sous forme de liste sur l'instance du tour. 
-
-"""
-
-# format du tuple
-# player_pair = ([], []) => player_pair = (player1, player2)
-# scores = ([player1, score_player1]
-# , [player2, score_player2])
-# output = ([Player("Hunold", "Raphael", "03/04/1977", "Homme", 1), 0], [Player("Hunold", "Théa", "14/06/2015", "Femme", , 3), 1])
+tournament_database = TinyDB('models/tournament.json')
+player_database = TinyDB('models/players.json')
 
 
 class Match:
@@ -30,7 +21,7 @@ class Match:
         
         # self._match_id = 
         # self._start_date = get_timestamp()
-        self._end_date = ""        
+        # self._end_date = ""        
         # self._winner = ""                            
 
     def __str__(self):
@@ -87,12 +78,9 @@ class Match:
         self._player2_score = x
 
 
-
-
-
     def play_match(self):
         scores = [0, 1, 0.5]
-        player2_score = 0 #init
+        # player2_score = 0 #init
                 
         # Mode random score
         player1_score = random.choice(scores) 
@@ -118,19 +106,36 @@ class Match:
         self._match_pair = ([self._player1_id, self._player1_score], [self._player2_id, self._player2_score])     
         
 
-
-    # def add_score_to_participant(self):
-    #     pass
-    
-
-
-
     # serialization
-    def serialized(self):
-        pass  
-    
-    def unserialized(self):
-        pass      
+
+    # def serialized(self):
+    #     serialized_match =  {
+    #         "player1_id": self.player1_id,
+    #         "player1_score": self.player1_score,
+    #         "player2_id": self.player2_id,
+    #         "player2_score": self.player2_score
+    #     }
+    #     return serialized_match
+
+
+
+    # def unserialized(self, serialized_match):
+    #     # match_id = serialized_match['Match ID']
+    #     player1_id = serialized_match["Joueur 1"]
+    #     player2_id = serialized_match["Joueur 2"]
+    #     player1_score = serialized_match["Score Joueur 1"]
+    #     player2_score = serialized_match["Score Joueur 2"]
+
+    #     return Match(player1_id,
+    #                  player2_id,
+    #                  player1_score,
+    #                  player2_score
+    #                 )
+         
+    # def add_to_database(self, list_matchs):   
+    #     match = Match(list_matchs)
+    #     match_id = tournament_database.insert(match.serialized())
+    #     tournament_database.update({"match_id": match_id}, doc_ids=[match_id])   
 
 
 

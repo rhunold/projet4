@@ -8,24 +8,14 @@ from models.tournament import Tournament
 
 from controllers.time import get_timestamp, get_date
 
-from controllers.controller import CreateTournament, CreatePlayer
+from controllers.tournament_manager import CreateTournament
+# from controllers.player_manager import CreatePlayer, ChangePlayerRank
 
 
-
-
-
-def main():
-    
-    
+def main(): 
 
     CreateTournament()
 
-
-    
-
-
-
-      
         
 
 if __name__ == "__main__":

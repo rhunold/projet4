@@ -2,24 +2,12 @@ from controllers.time import get_timestamp
 
 from models.match import Match
 
+from tinydb import TinyDB
+
+tournament_database = TinyDB('models/tournament.json')
+
 # from models.tournament import Tournament
 # from models.player import Player
-
-
-"""
-En plus de la liste des correspondances, chaque instance du tour doit contenir un champ de nom.
-
-Actuellement, nous appelons nos tours "Round 1", "Round 2", etc. 
-
-Elle doit également contenir un champ Date et heure de début et un champ Date et heure de fin,
-qui doivent tous deux être automatiquement remplis lorsque l'utilisateur crée un tour et le marque comme terminé.
-
-Les instances de round doivent être stockées dans une liste sur l'instance de tournoi à laquelle elles appartiennent.
-
-tour1 = Tour("1", [match1, match2, match3, match4])
-
-tour1 = Tour("1", [Match(raphael, thea), Match(gabriel, francis)])
-"""
 
 
 class Tour():
@@ -28,7 +16,7 @@ class Tour():
     
     def __init__(self, list_matchs=None):
         # self._name = "Round " + str(name)
-        self._id= Tour.class_counter
+        self._tour_id= Tour.class_counter
         Tour.class_counter += 1        
         
         if list_matchs is None: 
@@ -49,7 +37,7 @@ class Tour():
   
     def __str__(self):
         return (
-            f'Round {self._id},'
+            f'Round {self._tour_id},'
             f'{[str(match) for match in self._list_matchs]},'
             f'{self._start_date_and_hour},'
             f'{self._end_date_and_hour}'              
@@ -67,7 +55,7 @@ class Tour():
         tour = (
             # f'({self._name}, {[str(match) for match in self._list_matchs]})'
             
-            f'Round ("{self._id}",'
+            f'Round ("{self._tour_id}",'
 
             f'{[str(match) for match in self._list_matchs]},'
             f'"{self._start_date_and_hour}",'
@@ -77,8 +65,8 @@ class Tour():
 
     # get method
     @property    
-    def id(self):
-        return self._id
+    def tour_id(self):
+        return self._tour_id
 
     @property    
     def list_matchs(self):
@@ -94,9 +82,9 @@ class Tour():
     
 
     # setter method
-    @id.setter 
-    def id(self, x):
-        self._id = x
+    @tour_id.setter 
+    def tour_id(self, x):
+        self._tour_id = x
 
     @list_matchs.setter         
     def list_matchs(self, x):
@@ -115,16 +103,22 @@ class Tour():
 
 
 
-
-
-
-
   
     
     # serialization
-    def serialized(self):
-        pass  
-    
-    def unserialized(self):
-        pass      
+    # def serialized(self):
+    #     serialized_tour =  {
+    #         "tour_id": self.tour_id,
+    #         "list_matchs": [match.serialized() for match in self.list_matchs]
+    #     }
+    #     return serialized_tour       
+        
 
+
+    # def unserialized(self, serialized_tour):
+    #     tour_id = serialized_tour['tour_id']
+    #     list_matchs = serialized_tour['list_matchs']
+    #     return Tour(tour_id,
+    #                 list_matchs
+    #                 )
+    

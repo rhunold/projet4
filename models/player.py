@@ -1,5 +1,10 @@
 from datetime import datetime
 
+from tinydb import TinyDB, where, Query
+
+db = TinyDB('models/players.json')
+
+
 
 class Player:
     """Player Model"""
@@ -10,11 +15,11 @@ class Player:
         self._first_name = first_name.capitalize()
         self._birthdate = birthdate
         self._sex = sex
+        self._rank = rank        
         self._player_score = player_score
         
         # Attribus que l'on va manipuler
-        self._rank = rank
-        # self._played_with = played_with # on indique la liste des joueurs avec qui il a joué durant le tournoi
+
 
 
 
@@ -88,42 +93,110 @@ class Player:
     
     @rank.setter  
     def rank(self, x):
-        
+
         if isinstance(x, int) == False:
-            print("Il faut un chiffre pour le classement.")
+            print("Il faut un chiffre pour le classement. Veuillez réessayer.")
+            
+            
                         
         elif x <= 0:
-            print("Il faut un chiffre supérieur à 0.")                   
+            print("Il faut un chiffre supérieur à 0. Veuillez réessayer.")
+            
         else :
             self._rank = x
              
 
     @birthdate.setter    
     def birthdate(self, x):
-        self._birthdate = x 
+
         
         # Vérifier format de la date de naissance      
         try:
             datetime.strptime(self.birthdate, '%d-%m-%Y')
             # print('Bon format de date')
+            self._birthdate = x                 
+
         except ValueError: 
             # raise ValueError("Mauvais format de date")
             self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
-            
             print('Mauvais format, le bon format est JJ-MM-AAAA')
-
 
     @player_score.setter     
     def player_score(self, x):
         self._player_score= x
+        
+        
+        
     # others methods
-
-    # serialization
-    def serialized(self):
-        pass  
     
-    def unserialized(self):
-        pass      
+    
+    # serialization    
+
+    def serialized(self):
+        serialized_player = {
+            "player_id": self.player_id,            
+            "name": self.name,
+            "first_name": self.first_name,
+            "birthdate": self.birthdate,
+            "sex": self.sex,
+            "rank": self.rank,
+            "player_score": self.player_score            
+        }
+
+        return serialized_player
 
 
 
+
+    def unserialized(self, serialized_player):
+        player_id = serialized_player["player_id"]        
+        name = serialized_player["name"]
+        first_name = serialized_player["first_name"]
+        birthdate = serialized_player["birthdate"]
+        sex = serialized_player["sex"]
+        rank = serialized_player["rank"]
+        player_score = serialized_player["player_score"]
+
+        return Player(player_id,
+                      name,
+                      first_name,
+                      birthdate,
+                      sex,
+                      rank,
+                      player_score
+                      )    
+    
+
+    def save(self, player_id, name, first_name, birthdate, sex, rank, player_score):
+        player = Player(player_id, 
+                        name,
+                        first_name,
+                        birthdate,
+                        sex,
+                        rank,
+                        player_score
+                        )
+        # player_database.insert(player.serialized())
+        player_id = db.insert(player.serialized())        
+        db.update({"player_id": player_id}, doc_ids=[player_id])
+
+    def update_rank(self, player_id):
+        Player = Query()    
+        db.update({'rank': self.rank}, Player.player_id == int(player_id))
+        # print("Update réussie. Le joueur {self.player_id} a maintenant un classement de {self.rank}.")
+                
+        
+
+
+raphael = Player(1,"hunold","raphael","04-04-1977","Homme",1, 0)
+thea = Player(2,"Hunold","Théa","14-06-2015","Femme",5, 0)
+gabriel = Player(3,"Hunold","Gabriel","11-07-1978","Homme",6, 0)
+aloise = Player(4,"Hunold","Aloise","31-01-1980","Femme",7, 0)
+francis = Player(5,"Hunold","Francis","12-12-1943","Homme",2, 0)
+flora = Player(6,"Hunold","Flora","12-08-1980","Femme",11, 0)
+christine = Player(7,"Hunold","Christine","12-12-1953","Femme",10, 0)
+stephane = Player(8,"Hunold","Stephane","12-12-1973","Homme",9, 0)
+
+
+players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane] # liste de tous les joueurs
+# players = [] 
