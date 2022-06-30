@@ -2,7 +2,8 @@ from controllers.time import get_timestamp
 from database import *
 
 import json
-from json import JSONEncoder
+# from json import JSONEncoder
+from typing import List
 
 
 from models.tour import Tour
@@ -10,7 +11,6 @@ from models.player import Player, players
 
 
 from tinydb import TinyDB, Query
-
 db = TinyDB('models/tournament.json')
 
 # from models.player import Player
@@ -36,12 +36,12 @@ class Tournament:
         if list_tours is None: 
             self._list_tours = []
         else:
-            self._list_tours = list_tours
+            self._list_tours = List[Tour]     
 
         if list_players is None: 
             self._list_players= []
         else:
-            self._list_players= list_players            
+            self._list_players= List[Player]            
         
 
         
@@ -189,7 +189,11 @@ class Tournament:
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent=4))
 
     
-
+    @classmethod
+    def from_json(cls, data):
+        list_players = list(map(Player.from_json, data["_list_players"]))
+        # list_tours = list(map(Tour.from_json, data["list_tours"]))        
+        return cls(list_players)
 
 
     # def serialized(self):
@@ -206,57 +210,92 @@ class Tournament:
     #         "list_tours": [tour.serialized() for tour in self.list_tours],
     #         "list_players": [player.serialized() for player in self.list_players]
     #     }
-        
-
-        
     #     return serialized_tournament
 
 
 
-    # def unserialized(self, serialized_tournament):
-    #     tournament_id = serialized_tournament["tournament_id"]        
-    #     name = serialized_tournament['name']
-    #     description = serialized_tournament['description']
-    #     start_date_and_hour = serialized_tournament['start_date_and_hour']
-    #     end_date_and_hour = serialized_tournament['end_date_and_hour']
-    #     place = serialized_tournament['place']   
-    #     time_control = serialized_tournament['time_control']              
-    #     tour_number = serialized_tournament['tour_number']
-    #     list_tours = serialized_tournament["list_tours"]
-    #     list_players= serialized_tournament["list_players"]
+    def unserialized(self, serialized_tournament):
+        tournament_id = serialized_tournament["tournament_id"]        
+        name = serialized_tournament['name']
+        description = serialized_tournament['description']
+        start_date_and_hour = serialized_tournament['start_date_and_hour']
+        end_date_and_hour = serialized_tournament['end_date_and_hour']
+        place = serialized_tournament['place']   
+        time_control = serialized_tournament['time_control']              
+        tour_number = serialized_tournament['tour_number']
+        list_tours = serialized_tournament["list_tours"]
+        list_players= serialized_tournament["list_players"]
 
-    #     return Tournament(tournament_id,
-    #                       name,
-    #                       description,
-    #                       start_date_and_hour,                          
-    #                       end_date_and_hour,
-    #                       place,
-    #                       time_control,                          
-    #                       tour_number,
-    #                       list_tours,                          
-    #                       list_players
-    #                       )
-
-  
-
-    
+        return Tournament(tournament_id,
+                          name,
+                          description,
+                          start_date_and_hour,                          
+                          end_date_and_hour,
+                          place,
+                          time_control,                          
+                          tour_number,
+                          list_tours,                          
+                          list_players
+                          )
 
     def save(self):
         serialized_tournament = self.toJson()
-        db.insert(serialized_tournament)
+        tournament_id = db.insert(serialized_tournament)
         
-        # tournament = Tournament(name, description, start_date_and_hour, end_date_and_hour, place, time_control, tour_number, list_players, list_tours)        
-        # tournament_id = db.insert(serialized_tournament)
-        # db.update({"tournament_id": tournament_id}, doc_ids=[tournament_id])
+        # On update l'id du tournoi dans le json
+        db.update({"_tournament_id": tournament_id}, doc_ids=[tournament_id])
         
-         
+                
+
+    def load(self):
+        return json.load(json.loads(self, default=lambda o: o.__dict__, indent=4))   
           
     def update(self):
         Tournament= Query() 
-        serialized_tournament = self.toJson()
-        tournament_id = self.tournament_id       
+        tournament_id = self.tournament_id          
+        
+        serialized_tournament = db.search(Tournament._tournament_id == tournament_id)
+        serialized_tournament = serialized_tournament[0]
+        
+        print(serialized_tournament)        
+        
+        unserialized_tournament = self.load()
+        
+        print(unserialized_tournament)
+        
+        
+        # print(serialized_tournament)
+        
+        # tournament_id = serialized_tournament["_tournament_id"]        
+        # name = serialized_tournament['_name']
+        # description = serialized_tournament['_description']
+        # start_date_and_hour = serialized_tournament['_start_date_and_hour']
+        # end_date_and_hour = serialized_tournament['_end_date_and_hour']
+        # place = serialized_tournament['_place']   
+        # time_control = serialized_tournament['_time_control']              
+        # tour_number = serialized_tournament['_tour_number']
+        # list_tours = serialized_tournament["_list_tours"]
+        # list_players= serialized_tournament["_list_players"]
 
-        db.update(serialized_tournament, Tournament._tournament_id == int(tournament_id))        
+
+        # tournament = Tournament(tournament_id, name, description,
+        #            start_date_and_hour, end_date_and_hour,
+        #            place, time_control, tour_number,
+        #            list_tours,list_players
+        #            )        
+
+        # return print(tournament)
+
+                
+        serialized_tournament = self.toJson()
+ 
+            
+
+        db.update(serialized_tournament, doc_ids=[tournament_id])   
+        
+        # db.update(serialized_tournament, Tournament._tournament_id == tournament_id)           
+        # db.update({'rank': self.rank}, doc_ids=[player_id])
+           
 
         # serialized_tournament = self.toJson()
         # tournament_database.update(serialized_tournament)

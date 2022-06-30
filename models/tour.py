@@ -2,9 +2,11 @@ from controllers.time import get_timestamp
 
 from models.match import Match
 
-from tinydb import TinyDB
+from typing import List
+import json
 
-tournament_database = TinyDB('models/tournament.json')
+# from tinydb import TinyDB
+# tournament_database = TinyDB('models/tournament.json')
 
 # from models.tournament import Tournament
 # from models.player import Player
@@ -22,7 +24,7 @@ class Tour():
         if list_matchs is None: 
             self._list_matchs= []
         else:
-            self._list_matchs= list_matchs  
+            self._list_matchs=  List[Match]  
         
         self._start_date_and_hour = get_timestamp()
         self._end_date_and_hour = "0"
@@ -101,7 +103,9 @@ class Tour():
 
     # others methods
 
-
+    def from_json(cls, data):
+        list_matchs = list(map(Match.from_json, data["list_matchs"]))
+        return cls(list_matchs)
 
   
     

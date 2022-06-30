@@ -2,10 +2,12 @@ import random
 
 from controllers.time import get_timestamp
 
-from tinydb import TinyDB
+# from tinydb import TinyDB
 
-tournament_database = TinyDB('models/tournament.json')
-player_database = TinyDB('models/players.json')
+# tournament_database = TinyDB('models/tournament.json')
+# player_database = TinyDB('models/players.json')
+
+import json
 
 
 class Match:
@@ -77,6 +79,11 @@ class Match:
     def player2_score(self, x):
         self._player2_score = x
 
+
+    @classmethod
+    def from_json(cls, data):
+        return cls(**data)
+    
 
     def play_match(self):
         scores = [0, 1, 0.5]
