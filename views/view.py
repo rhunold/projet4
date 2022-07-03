@@ -1,15 +1,33 @@
-""" Defaut View """
+import os
+# import time
+
+def clear_screen():
+    #  screen will be cleared for mac/linux
+    if(os.name == 'posix'):
+        os.system('clear')
+    # else screen will be cleared for windows
+    else:
+        os.system('cls')
 
 class View():
     """Get User input and preprocess """
-    def get_user_input(self, msg_display, msg_error, value_type, assertions=None, default_value=None):
-        while True:
-            value = input(msg_display)
+    
+    # def __init__(self):
+    #     clear_screen() 
             
+    
+    def get_user_input(self, msg_display, msg_error, value_type, assertions=None, default_value=None): 
+        # clear_screen()          
+        while True:
+                        
+            value = input(msg_display)
+
             if value_type == "numeric":
                 if value.isnumeric():
                     value = int(value)
+                    
                     return value
+ 
                 else:
                     print(msg_error)
                     continue
@@ -47,6 +65,8 @@ class View():
                 else:
                     print(msg_error)
                     continue
+
+
                 
     @staticmethod
     def verify_date(value_tested):
@@ -59,16 +79,16 @@ class View():
                     return False
             return True
         
-    @staticmethod
-    def build_selection(iterable: list, display_msg: str, assertions: list) -> dict:
-        display_msg = display_msg
-        assertions = assertions
+    # @staticmethod
+    # def build_selection(iterable: list, display_msg: str, assertions: list) -> dict:
+    #     display_msg = display_msg
+    #     assertions = assertions
 
-        for i, data in enumerate(iterable):
-            display_msg = display_msg + f"{i+1} - {data['name']}\n"
-            assertions.append(str(i + 1))
+    #     for i, data in enumerate(iterable):
+    #         display_msg = display_msg + f"{i+1} - {data['name']}\n"
+    #         assertions.append(str(i + 1))
 
-        return {
-            "msg": display_msg,
-            "assertions": assertions
-            }                
+    #     return {
+    #         "msg": display_msg,
+    #         "assertions": assertions
+    #         }                

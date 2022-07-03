@@ -26,7 +26,7 @@ class Player:
 
     def __str__(self):
         str = (
-            f'{self._first_name} {self._name}'
+            f'{self._first_name} {self._name}, classement : {self._rank}'
             )
         return str    
     
@@ -39,13 +39,13 @@ class Player:
             # f'"{self._sex}",' 
             # f'{self._rank},'
             # f'{self._player_score})'
-            f'Player("player_id" :{self._player_id}, '
-            f'"name" : {self._name}, '            
-            f'"first_name" : {self._first_name}, '
-            f'"birthdate" : {self._birthdate}, '   
-            f'"sex" : {self._sex}, ' 
-            f'"rank" : {self._rank}, '
-            f'"player_score" : {self._player_score})'                      
+            f'Player({self._player_id}, '
+            f'"{self._name}", '            
+            f'"{self._first_name}", '
+            f'"{self._birthdate}", '   
+            f'"{self._sex}", ' 
+            f'{self._rank}, '
+            f'{self._player_score})'                      
         )
         
         return player
@@ -107,17 +107,6 @@ class Player:
     def birthdate(self, x):
         self._birthdate= x
         
-        # # Vérifier format de la date de naissance      
-        # try:
-        #     datetime.strptime(self.birthdate, '%d-%m-%Y')
-        #     # print('Bon format de date')
-        #     self._birthdate = x                 
-
-        # except ValueError: 
-        #     # raise ValueError("Mauvais format de date")
-        #     self._birthdate = "Mauvaise valeur...Remettre ancienne valeur" 
-        #     print('Mauvais format, le bon format est JJ-MM-AAAA')
-
     @player_score.setter     
     def player_score(self, x):
         self._player_score= x
@@ -125,19 +114,6 @@ class Player:
         
         
     # others methods
-
-    def serialized(self):
-        serialized_player = {
-            "player_id": self.player_id,            
-            "name": self.name,
-            "first_name": self.first_name,
-            "birthdate": self.birthdate,
-            "sex": self.sex,
-            "rank": self.rank,
-            "player_score": self.player_score            
-        }
-
-        return serialized_player
 
 
     def unserialized(self, serialized_player):
@@ -158,15 +134,14 @@ class Player:
                       player_score
                       )  
     
-    def show_players(self):
-        return print(db.all())
+
 
     def toJson(self):
         return json.loads(json.dumps(self, default=lambda o: o.__dict__, indent=4))
    
     @classmethod
     def from_json(cls, data):
-        return cls(data)
+        return cls(**data)
 
     def save(self):
         serialized_player= self.toJson()
@@ -175,30 +150,8 @@ class Player:
         # On update l'id du tournoi dans le json
         db.update({"_player_id": player_id}, doc_ids=[player_id])
         
-    def update(self):  
-        pass
-    
-        # Player = Query() 
-        # load = json.load(self)
-        # # load["_birthdate"] = datetime.datetime.strftime(load["_birthdate"], '%d-%m-%Y')
-        # decoded_team = self.from_json(load)
-        # return print(decoded_team)
-
-        # serialized_player= self.toJson()
-        # player_id = db.insert(serialized_player)
-        
-        # # On update l'id du tournoi dans le json
-   
-        # db.update({'rank': self.rank}, Player.player_id == self.player_id)
-        
-        # Find all documents (dict objects) that contain 'a' key and set value of key 'a' to 2
-        # serialized_player= self.toJson()
-        # db.update(serialized_player, Player.player_id == player_id)        
-        # db.update({'_rank': self.rank}, doc_ids=[self.player_id])
-
-        
-     
-
+    def update_rank(self):
+        db.update({'_rank': self.rank}, doc_ids=[self.player_id]) 
 
             
 

@@ -104,7 +104,7 @@ class Tour():
     # others methods
 
     def from_json(cls, data):
-        list_matchs = list(map(Match.from_json, data["list_matchs"]))
+        list_matchs = list(map(Match().from_json, data["_list_matchs"]))
         return cls(list_matchs)
 
   

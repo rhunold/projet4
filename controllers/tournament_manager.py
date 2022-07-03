@@ -8,7 +8,46 @@ from models.tour import Tour
 from models.tournament import Tournament
 
 from controllers.time import get_timestamp
-from views.interface import CreateTournamentText
+from views.interface import CreateTournamentText, LoadTournamentText
+
+from tinydb import TinyDB, where, Query
+
+json_tournament = 'models/tournament.json'
+db = TinyDB(json_tournament)
+
+
+# list_players = []
+
+def show_tournaments():
+    tournaments_db = db.all()
+    tournaments = []
+    
+    for tournament in tournaments_db:
+        # tournament = Tournament().unserialized(tournament)
+        # tournament = Tournament().from_json(json.loads(Tournament().toJson()))        
+        tournaments.append(tournament)
+        print(tournament)
+
+    # print(tournaments[0])      
+
+def load_tournament(tournament_id):  
+    search_result = db.search(Query().fragment({'_tournament_id': tournament_id}))
+    loaded_tournament = Tournament().unserialized(search_result[0])
+    return loaded_tournament
+
+def add_player_to_tournament(player_id):
+    if any(player.player_id == player_id for player in players):
+        for player in players:
+            if player.player_id == player_id :
+                
+                list_players.append(player) # on ajoute le joueur dans les participants
+                players.remove(player) # On enlève le joueur des joueurs disponibles
+        return None 
+
+
+    else:
+        print(f"Il n'existe pas de joueur avec l'identifiant {player_id} ou il a déjà été sélectionné")     
+
  
 
 class CreateTournamentProcess:
@@ -26,7 +65,12 @@ class CreateTournamentProcess:
         
         tournament_number_players = user_input["number_players"]          
 
-        # time.sleep(2.5)
+        # tournament.save() 
+                
+                
+        # Si pas de joueurs dans la bdd ou pas assez (inferieur à tournament_number_players), afficher un message indiquant qu'il faut d'abord crée au moins x joueurs
+        # Code à écrire...
+        
         
         registered_participants = len(tournament.list_players)
         # print(f"Il y a {str(registered_participants)} joueurs inscrits au tournoi")    
@@ -34,12 +78,15 @@ class CreateTournamentProcess:
         # On demande au directeur de choisir 8 participants parmi les joueurs crées au préalable.
         while registered_participants <= tournament_number_players:
             
+            # On affiche un menu pour proposer 1/ soit de créer un nouveau joueur, 2/ soit de le charger à partir de la bdd
+            
             player_id = random.randrange(10) # Ajout automatique d'un joueur ayant id de 0 à 10
             
-            # # Faire en sorte que le code ci dessous se retourve dans  interface.py 
+            # Faire en sorte que le code ci dessous se retourve dans  interface.py 
             # player_id = int(input("Ajouter un joueur avec son identifiant : "))
             
             tournament.add_player(player_id)
+            # add_player_to_tournament(player_id)            
             
             # # Faire en sorte que le code ci dessous se retourve dans  interface.py             
             print(f"Il y a {str(len(tournament.list_players))} joueurs inscrits au tournoi. Il en manque {str(tournament_number_players - len(tournament.list_players))}")        
@@ -153,14 +200,18 @@ class CreateTournamentProcess:
         tournament.end_date_and_hour = get_timestamp()
         
         # On enreistre en json
-        tournament.save() 
+        # tournament.update() 
         
         # On serialize / marche pas actuellemnt pour enregistré dans le json...wording on it pour les update de data (car faut aussi deserialiser)
-        data = json.dumps(tournament, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-        print(data)
+        # data = json.dumps(tournament, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        # print(data)
 
         # On deserialize 
+        data = json.dumps(tournament, default=lambda o: o.__dict__, sort_keys=True, indent=4)
         deserialize_data = tournament.from_json(json.loads(data))
+        deserialize_data
+             
+        # deserialize_data = tournament.from_json(json.loads(json.loads(json.dumps(tournament, default=lambda o: o.__dict__, indent=4))))
         print(deserialize_data)        
         
         # and the winner of the tournament is / en faire une fonction à mettre plus haut (mais pas trop... après que tournament.list_players soit fixé)
@@ -171,6 +222,46 @@ class CreateTournamentProcess:
 
 
 class LoadTournamentProcess:
-    def display(self):    
-        print("On affiche la bdd ET on demand un id comme input")
+    def display(self):   
+        
+        show_tournaments()
+        
+        user_input = LoadTournamentText().display()  
+
+        tournament_id = user_input
+        tournament = load_tournament(tournament_id)
+
+        print(f"Le tournois {tournament.name} a été chargé avec succés.") 
+        return tournament
+
+         
+        
+        
+"""
+
+Liste de tous les tournois (afficher tous les tournois, en selectionner un avant de passer à la suite)
+    Liste de tous les joueurs d'un tournoi par ordre alphabétique
+    Liste de tous les joueurs d'un tournoi par ordre classement    
+    Liste de tous les tours d'un tournoi.
+    Liste de tous les matchs d'un tournoi.
+    
+    
+Liste de tous les joueurs :
+    par ordre alphabétique ;
+    par classement.
+    
+"""              
+        
+class TournamentReportProcess:
+    def display_player_by_name(self): 
+        pass
+    
+    def display_player_by_rank(self): 
+        pass    
+        
+    def display_tour(self): 
+        pass     
+    
+    def display_match(self): 
+        pass             
         

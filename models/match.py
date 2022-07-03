@@ -126,18 +126,18 @@ class Match:
 
 
 
-    # def unserialized(self, serialized_match):
-    #     # match_id = serialized_match['Match ID']
-    #     player1_id = serialized_match["Joueur 1"]
-    #     player2_id = serialized_match["Joueur 2"]
-    #     player1_score = serialized_match["Score Joueur 1"]
-    #     player2_score = serialized_match["Score Joueur 2"]
+    def unserialized(self, serialized_match):
+        # match_id = serialized_match['Match ID']
+        player1_id = serialized_match["Joueur 1"]
+        player2_id = serialized_match["Joueur 2"]
+        player1_score = serialized_match["Score Joueur 1"]
+        player2_score = serialized_match["Score Joueur 2"]
 
-    #     return Match(player1_id,
-    #                  player2_id,
-    #                  player1_score,
-    #                  player2_score
-    #                 )
+        return Match(player1_id,
+                     player2_id,
+                     player1_score,
+                     player2_score
+                    )
          
     # def add_to_database(self, list_matchs):   
     #     match = Match(list_matchs)

@@ -26,12 +26,25 @@ class ManageTournamentText(View):
 class ManagePlayerText(View):
     def display(self):     
         user_input = self.get_user_input(
-            msg_display = "Gestion des joueurs\n0 - Créer un joueur \n1 - Charger un joueur\n2 - Changer le classement d'un jour\n3 Accueil\nVotre choix : ",
+            msg_display = "Gestion des joueurs\n0 - Créer un joueur \n1 - Changer le classement d'un joueur\n2 - Accueil\nVotre choix : ",
+            msg_error = "Veuillez entrer une valeur valide",
+            value_type = "selection",
+            assertions = ["0", "1", "2"]
+            ) 
+        return user_input 
+    
+    
+
+    
+class ManageReportText(View):
+    def display(self):     
+        user_input = self.get_user_input(
+            msg_display = "Rapports\n0 - Tournois \n1 - Joueurs par ordre alphabétique \n2 - Joueurs par classement \n3 - Accueil\nVotre choix : ",
             msg_error = "Veuillez entrer une valeur valide",
             value_type = "selection",
             assertions = ["0", "1", "2", "3"]
             ) 
-        return user_input    
+        return user_input        
     
 class CreateTournamentText(View):
     def display(self):  
@@ -102,11 +115,11 @@ class CreateTournamentText(View):
 class LoadTournamentText(View):
     def display(self):
         user_input = self.get_user_input(
-            msg_display="Quel Tournois souhaitez-vous charger ?\n> ",
+            msg_display="Quel tournois souhaitez-vous charger ?\n> ",
             msg_error="Veuillez entrer une valeur numérique valide.",
             value_type="numeric"
         )
-        
+        print("Le tournois à bien été chargé")
         return user_input
     
     
@@ -139,7 +152,7 @@ class CreatePlayerText(View):
         #     value_type="numeric"
         # )
         
-        first_name = "Raphael"
+        first_name = "Aloise"
         name = "Hunold"
         birthdate = "03-04-1977"
         sex = "H"
@@ -154,11 +167,13 @@ class CreatePlayerText(View):
         return player    
 
 
+        
+        
+
 class ChangePlayerRankText(View):
     def display(self):
-        print()
         user_input = self.get_user_input(
-            msg_display="Nouveau classement:\n> ",
+            msg_display="Nouveau classement :\n> ",
             msg_error="Veuillez entrer une valeur numérique valide.",
             value_type="numeric"
         )
@@ -169,21 +184,24 @@ class ChangePlayerRankText(View):
 class LoadPlayerText(View):
     def display(self):
         user_input = self.get_user_input(
-            msg_display="Identifiant du joueur à charger:\n> ",
+            msg_display="Quel joueur souhaitez-vous choisir ?:\n> ",
             msg_error="Veuillez entrer une valeur numérique valide.",
             value_type="numeric"
         )
         
         return user_input
     
-class LoadTournamentText(View):
-    def display(self):
-        user_input = self.get_user_input(
-            msg_display="Identifiant du tournois à charger:\n> ",
-            msg_error="Veuillez entrer une valeur numérique valide.",
-            value_type="numeric"
-        )
+# class LoadTournamentText(View):
+#     def display(self):
+#         user_input = self.get_user_input(
+#             msg_display="Identifiant du tournois à charger:\n> ",
+#             msg_error="Veuillez entrer une valeur numérique valide.",
+#             value_type="numeric"
+#         )
         
-        return user_input       
+#         return user_input
+    
+    
+
 
    
