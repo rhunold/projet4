@@ -1,5 +1,4 @@
 from controllers.time import get_timestamp
-from database import *
 
 import json
 # from json import JSONEncoder
@@ -7,7 +6,7 @@ from typing import List
 
 
 from models.tour import Tour
-from models.player import Player, players
+from models.player import Player
 
 
 from tinydb import TinyDB, Query
@@ -21,7 +20,7 @@ class Tournament:
     """Tournament Model"""  
     class_counter= 1      
     
-    def __init__(self, tournament_id=0, name="", description="", start_date_and_hour="", end_date_and_hour="", place="", tour_number=4, time_control="", list_tours=None, list_players=None):
+    def __init__(self, tournament_id="", name="", description="", start_date_and_hour="", end_date_and_hour="", place="", tour_number=4, time_control="", list_tours=None, list_players=None ):
         # self._tournament_id = Tournament.class_counter
         # Tournament.class_counter += 1   
         self._tournament_id = tournament_id
@@ -41,12 +40,12 @@ class Tournament:
         if list_players is None: 
             self._list_players= []
         else:
-            self._list_players= List[Player]            
+            self._list_players= List[Player]
         
 
         
     def __str__(self):
-        return (
+        str (
             f'Id du tournoi : {self._tournament_id}\n'            
             f'Nom du tournoi : {self._name}\n'
             f'Description : {self._description}\n'
@@ -57,24 +56,24 @@ class Tournament:
             f'Time Control : {self._time_control}\n'            
             f'Liste des tours : {[str(tour) for tour in self._list_tours]}\n'
             f'Liste des joueurs : {self._list_players}\n'
-
         )
+        return str
     
     
     def __repr__(self):
         tournament = (
             # f'{[str(rounds) for rounds in self._list_rounds]}'
             
-            f'Tournament("{self._tournament_id}",'
+            f'Tournament({self._tournament_id},'
             f'"{self._name}",'            
             f'"{self._description}",'
             f'"{self._start_date_and_hour}",'
             f'"{self._end_date_and_hour}",'
             f'"{self._place}",'
             f'{self._tour_number},'
-            f'{self._time_control},'            
-            f'{[str(tour) for tour in self._list_tours]},'
-            f'{self._list_players})'
+            f'"{self._time_control}",'            
+            f'"{[str(tour) for tour in self._list_tours]}",'
+            f'"{self._list_players}")'
 
         )        
         
@@ -169,21 +168,21 @@ class Tournament:
 
 
     
-    def add_player(self, player_id):
-        # On s'assure que la liste des joueurs comprend un joueur avec l'id demandé
+    # def add_player(self, player_id):
+    #     # On s'assure que la liste des joueurs comprend un joueur avec l'id demandé
         
-        # si on trouve l'id, on ajoute le joueur en tant que participant
-        if any(player.player_id == player_id for player in players):
-            for player in players:
-                if player.player_id == player_id :
+    #     # si on trouve l'id, on ajoute le joueur en tant que participant
+    #     if any(player.player_id == player_id for player in players):
+    #         for player in players:
+    #             if player.player_id == player_id :
                     
-                    self._list_players.append(player) # on ajoute le joueur dans les participants
-                    players.remove(player) # On enlève le joueur des joueurs disponibles
-            return None 
+    #                 self._list_players.append(player) # on ajoute le joueur dans les participants
+    #                 players.remove(player) # On enlève le joueur des joueurs disponibles
+    #         return None 
 
 
-        else:
-            print(f"Il n'existe pas de joueur avec l'identifiant {player_id} ou il a déjà été sélectionné")
+    #     else:
+    #         print(f"Il n'existe pas de joueur avec l'identifiant {player_id} ou il a déjà été sélectionné")
 
 
     # def serialized(self):
@@ -237,18 +236,34 @@ class Tournament:
     
     @classmethod
     def from_json(cls, data):
-        print("test dans le from_jason du model tournament")
+        print("test dans le from_json du model tournament")
         list_players = list(map(Player().from_json, data["_list_players"]))
-        list_tours = list(map(Tour().from_json, data["_list_tours"]))        
+        list_tours = list(map(Tour().from_json, data["_list_tours"]))
+        # list_matchs = list(map(Match().from_json, data["_list_matchs"]))          
         return cls(list_players, list_tours)
 
 
-    # def save(self):
-    #     serialized_tournament = self.toJson()
-    #     tournament_id = db.insert(serialized_tournament)
+    def save(self):
+        serialized_tournament = self.toJson()
+        tournament_id = db.insert(serialized_tournament)
         
-    #     # On update l'id du tournoi dans le json
-    #     db.update({"_tournament_id": tournament_id}, doc_ids=[tournament_id])
+        # On update l'id du tournoi dans le json
+        db.update({"_tournament_id": tournament_id}, doc_ids=[tournament_id])
+        
+        return tournament_id
+      
+
+
+    def load(self):
+        return json.load(json.loads(self, default=lambda o: o.__dict__, indent=4))            
+        
+    def update_list_tours(self):
+        db.update({'_list_tours': self.list_tours}, doc_ids=[self.tournament_id])     
+        
+    def update_list_players(self):
+        db.update({'_list_players': self.list_players}, doc_ids=[self.tournament_id])
+        
+        
         
 
           
@@ -280,5 +295,5 @@ class Tournament:
         
         
         
-    def load(self):
-        return json.load(json.loads(self, default=lambda o: o.__dict__, indent=4))   
+    
+# tournaments = []     

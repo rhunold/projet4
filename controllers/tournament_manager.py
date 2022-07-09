@@ -1,103 +1,138 @@
 import time
 import random
 import json
+from tkinter import N
 
-from models.player import Player, players
+from models.player import Player
 from models.match import Match
 from models.tour import Tour
 from models.tournament import Tournament
 
 from controllers.time import get_timestamp
-from views.interface import CreateTournamentText, LoadTournamentText
+from views.interface import CreateTournamentText, LoadTournamentText, LoadPlayerText, CreateOrLoadPlayerText
 
+from controllers.player_manager import LoadPlayerProcess, CreatePlayerProcess
 from tinydb import TinyDB, where, Query
 
 json_tournament = 'models/tournament.json'
 db = TinyDB(json_tournament)
 
 
-# list_players = []
 
-def show_tournaments():
+
+def load_tournaments():
     tournaments_db = db.all()
     tournaments = []
-    
     for tournament in tournaments_db:
-        # tournament = Tournament().unserialized(tournament)
-        # tournament = Tournament().from_json(json.loads(Tournament().toJson()))        
-        tournaments.append(tournament)
-        print(tournament)
+        tournament = Tournament().unserialized(tournament)
+        tournaments.append(tournament)       
+    return tournaments
 
     # print(tournaments[0])      
 
 def load_tournament(tournament_id):  
-    search_result = db.search(Query().fragment({'_tournament_id': tournament_id}))
-    loaded_tournament = Tournament().unserialized(search_result[0])
-    return loaded_tournament
-
-def add_player_to_tournament(player_id):
-    if any(player.player_id == player_id for player in players):
-        for player in players:
-            if player.player_id == player_id :
-                
-                list_players.append(player) # on ajoute le joueur dans les participants
-                players.remove(player) # On enlève le joueur des joueurs disponibles
-        return None 
-
-
+    tournament_db = db.search(Query().fragment({'_tournament_id': tournament_id}))
+    if not tournament_db:
+        print(f"Cet identifiant n'existe pas dans la base de donnée. Veuillez choisir un identifiant disponible.")
+        return LoadTournamentProcess().ask_tournament_id()    
     else:
-        print(f"Il n'existe pas de joueur avec l'identifiant {player_id} ou il a déjà été sélectionné")     
+        tournament = Tournament().unserialized(tournament_db[0])
+        return tournament
 
- 
+def display_tournaments_from_db(tournaments):
+    for tournament in tournaments:
+        print(f"{tournament.tournament_id} {tournament.name} {tournament.description}  {tournament.place}")
+
+
+
+def update(tournament_id):
+    return json.load(json.loads(tournament_id, default=lambda o: o.__dict__, indent=4))     
 
 class CreateTournamentProcess:
     def display(self):
-        tournament = Tournament()  # Initialisation
         
-        user_input = CreateTournamentText().display() # Saisie
+        # Recuperation de la saisie des infos sur le tournois
+        user_input = CreateTournamentText().display() 
 
         # Instanciation Tournois
-        tournament.name = user_input["name"]
-        tournament.place = user_input["place"]                
-        tournament.time_control = user_input["time_control"]
-        tournament.tour_number = user_input["tour_number"]
-        tournament.description = user_input["description"]    
-        
-        tournament_number_players = user_input["number_players"]          
+        tournament_id = user_input[8]
+        name = user_input[0]
+        description = user_input[1]   
+        start_date_and_hour = user_input[2]
+        end_date_and_hour = user_input[3]  
+        place = user_input[4]               
+        tour_number = user_input[5]                  
+        time_control = user_input[6]
+        list_tours = None
+        list_players = None
 
-        # tournament.save() 
-                
-                
-        # Si pas de joueurs dans la bdd ou pas assez (inferieur à tournament_number_players), afficher un message indiquant qu'il faut d'abord crée au moins x joueurs
-        # Code à écrire...
+        tournament_number_players = user_input[7]    
         
+        tournament = Tournament(tournament_id, name, description, start_date_and_hour, end_date_and_hour, place, tour_number, time_control, list_tours , list_players)  # Initialisation  
         
-        registered_participants = len(tournament.list_players)
-        # print(f"Il y a {str(registered_participants)} joueurs inscrits au tournoi")    
+        tournament.save()  
+        
+        # return tournament_info
+    # def add_players(self):     
     
-        # On demande au directeur de choisir 8 participants parmi les joueurs crées au préalable.
-        while registered_participants <= tournament_number_players:
+    
+        # AJOUT DES JOUEURS
+        # Dynamique
+        
+        # while len(tournament.list_players) <= tournament_number_players:
+        #     # Demander si on veut créer un joueur ou en choisir un en base
             
-            # On affiche un menu pour proposer 1/ soit de créer un nouveau joueur, 2/ soit de le charger à partir de la bdd
-            
-            player_id = random.randrange(10) # Ajout automatique d'un joueur ayant id de 0 à 10
-            
-            # Faire en sorte que le code ci dessous se retourve dans  interface.py 
-            # player_id = int(input("Ajouter un joueur avec son identifiant : "))
-            
-            tournament.add_player(player_id)
-            # add_player_to_tournament(player_id)            
-            
-            # # Faire en sorte que le code ci dessous se retourve dans  interface.py             
-            print(f"Il y a {str(len(tournament.list_players))} joueurs inscrits au tournoi. Il en manque {str(tournament_number_players - len(tournament.list_players))}")        
+        #     create_or_load = CreateOrLoadPlayerText().display()             
+                            
+        #     if create_or_load == "0":
+        #         player = CreatePlayerProcess().display()
+        #         tournament.list_players.append(player)
+        #         continue
+                
+        #         # print(player)
 
-            if len(tournament.list_players) == tournament_number_players:  
-                break
-                    
-        print(f'Liste des joueurs du tournois : {tournament.list_players}')
+        #     elif create_or_load == "1":
+        #         player = LoadPlayerProcess().ask_player_id()  
+        #         tournament.list_players.append(player)
+        #         # tournament.update_list_players(player)
+        #         continue
+            
+        #     else:
+        #         # Pour sortir du tournois...et y revenir...
+        #         pass
+            
+        #     if len(tournament.list_players) == tournament_number_players:
+        #         break
+                
+            
+        #     # else:
+        #     #     print("Cas que l'on aurait pas détecté ou erreur ?")
+        #     #     pass
+            
 
-        # tournament.save() 
-        # tournament.update() 
+        # print(f'Liste des joueurs du tournois : {[player.first_name for player in tournament.list_players]}')
+
+        # Statique
+        # EQuivalent de la boucle while pour ajouter des joueurs (créer ou loadé)
+        raphael = Player(1,"hunold","raphael","04-04-1977","Homme",1, 0)
+        thea = Player(2,"Hunold","Théa","14-06-2015","Femme",5, 0)
+        gabriel = Player(3,"Hunold","Gabriel","11-07-1978","Homme",6, 0)
+        aloise = Player(4,"Hunold","Aloise","31-01-1980","Femme",7, 0)
+        francis = Player(5,"Hunold","Francis","12-12-1943","Homme",2, 0)
+        flora = Player(6,"Hunold","Flora","12-08-1980","Femme",11, 0)
+        christine = Player(7,"Hunold","Christine","12-12-1953","Femme",10, 0)
+        stephane = Player(8,"Hunold","Stephane","12-12-1973","Homme",9, 0)
+        
+        tournament.list_players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane] # liste de tous les joueurs    
+        
+        print(f'Liste des joueurs du tournois : {[player.first_name for player in tournament.list_players]}')
+        
+            
+        # WORKING HERE
+        # tournament.update_list_players()        
+ 
+        # return tournament_players
+    # def add_tours(self):  
         
         while tournament.tour_number != len(tournament.list_tours): 
 
@@ -116,10 +151,10 @@ class CreateTournamentProcess:
                 middle=int(len(tournament.list_players)/2)
 
                 #Split the list from starting index upto middle index in first half
-                first_players=sort_participants_by_rank[:middle]
+                first_players = sort_participants_by_rank[:middle]
 
                 #Split the list from middle index index upto the last index in second half
-                sec_players=sort_participants_by_rank[middle:]
+                sec_players = sort_participants_by_rank[middle:]
 
             else :
                 print(f"{str(len(tournament.list_tours)+1)}ème tour")
@@ -129,10 +164,10 @@ class CreateTournamentProcess:
                 sort_participants_by_score_and_rank = sorted(tournament.list_players, key=lambda x: (-x.player_score, x.rank))
                 
                 #Split the list from starting index upto middle index in first half
-                first_players=sort_participants_by_score_and_rank[::2]
+                first_players = sort_participants_by_score_and_rank[::2]
 
                 #Split the list from middle index index upto the last index in second half
-                sec_players=sort_participants_by_score_and_rank[1::2]            
+                sec_players = sort_participants_by_score_and_rank[1::2]            
 
 
             allmatch = []
@@ -195,25 +230,19 @@ class CreateTournamentProcess:
         
         # list_tours = tournament.list_tours
         
+      
 
         # Fin du Tounois
         tournament.end_date_and_hour = get_timestamp()
         
         # On enreistre en json
-        # tournament.update() 
+        tournament.save() 
         
         # On serialize / marche pas actuellemnt pour enregistré dans le json...wording on it pour les update de data (car faut aussi deserialiser)
         # data = json.dumps(tournament, default=lambda o: o.__dict__, sort_keys=True, indent=4)
         # print(data)
-
-        # On deserialize 
-        data = json.dumps(tournament, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-        deserialize_data = tournament.from_json(json.loads(data))
-        deserialize_data
-             
-        # deserialize_data = tournament.from_json(json.loads(json.loads(json.dumps(tournament, default=lambda o: o.__dict__, indent=4))))
-        print(deserialize_data)        
         
+             
         # and the winner of the tournament is / en faire une fonction à mettre plus haut (mais pas trop... après que tournament.list_players soit fixé)
         sort_participants_by_score = sorted(tournament.list_players, key=lambda x: x.player_score, reverse=True)
         
@@ -221,21 +250,29 @@ class CreateTournamentProcess:
         print(f"Le gagnant est {sort_participants_by_score[0]}")
 
 
-class LoadTournamentProcess:
-    def display(self):   
-        
-        show_tournaments()
-        
-        user_input = LoadTournamentText().display()  
-
-        tournament_id = user_input
-        tournament = load_tournament(tournament_id)
-
-        print(f"Le tournois {tournament.name} a été chargé avec succés.") 
-        return tournament
-
          
-        
+class LoadTournamentProcess:
+    def ask_tournament_id(self):
+        while True:    
+            tournaments = load_tournaments()
+            display_tournaments_from_db(tournaments)
+            
+            try: 
+                tournament_id = LoadTournamentText().display()
+                # print(player_id)
+                tournament = load_tournament(tournament_id)
+                # print(player)
+                
+            except ValueError:
+                print("test ValueError")
+            else:
+                # print(f"return {player}")
+                return tournament
+ 
+    def load_tournament(self, tournament_id):
+        tournament = load_tournament(tournament_id)
+        return tournament                 
+      
         
 """
 
@@ -251,17 +288,27 @@ Liste de tous les joueurs :
     par classement.
     
 """              
+
+
         
 class TournamentReportProcess:
-    def display_player_by_name(self): 
-        pass
     
-    def display_player_by_rank(self): 
-        pass    
+    def display_by_player_name(tournament): 
+
+
+        tournaments = sorted(tournaments, key=lambda x: x._name, reverse=True)  
         
-    def display_tour(self): 
-        pass     
+        display_tournaments_from_db(tournaments)    
+
+    # def display_by_player_rank():
+    #     pass
     
-    def display_match(self): 
-        pass             
+    # def display_by_tours():
+    #     pass    
+    
+    # def display_by_matchs():
+    #     pass        
+                
+            
+
         

@@ -1,10 +1,11 @@
 from datetime import datetime
+import json
 
 from tinydb import TinyDB, where, Query
 
 json_player = 'models/players.json'
 db = TinyDB(json_player)
-import json
+
 
 
 class Player:
@@ -154,17 +155,3 @@ class Player:
         db.update({'_rank': self.rank}, doc_ids=[self.player_id]) 
 
             
-
-
-raphael = Player(1,"hunold","raphael","04-04-1977","Homme",1, 0)
-thea = Player(2,"Hunold","Théa","14-06-2015","Femme",5, 0)
-gabriel = Player(3,"Hunold","Gabriel","11-07-1978","Homme",6, 0)
-aloise = Player(4,"Hunold","Aloise","31-01-1980","Femme",7, 0)
-francis = Player(5,"Hunold","Francis","12-12-1943","Homme",2, 0)
-flora = Player(6,"Hunold","Flora","12-08-1980","Femme",11, 0)
-christine = Player(7,"Hunold","Christine","12-12-1953","Femme",10, 0)
-stephane = Player(8,"Hunold","Stephane","12-12-1973","Homme",9, 0)
-
-
-players = [raphael, thea, gabriel, aloise, francis, flora, christine, stephane] # liste de tous les joueurs
-# players = [] 

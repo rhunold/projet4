@@ -44,7 +44,19 @@ class ManageReportText(View):
             value_type = "selection",
             assertions = ["0", "1", "2", "3"]
             ) 
-        return user_input        
+        return user_input   
+    
+    
+class ManageTournamentReportText(View):
+    def display(self):     
+        user_input = self.get_user_input(
+            msg_display = "Rapports du tournois XXX \n0 - par nom des joueurs \n1 - par rang des joueurs \n2 - par tour \n3 - par match  \n4 - Retour au menu des rapports\nVotre choix : ",
+            msg_error = "Veuillez entrer une valeur valide",
+            value_type = "selection",
+            assertions = ["0", "1", "2", "3", "4"]
+            ) 
+        return user_input   
+             
     
 class CreateTournamentText(View):
     def display(self):  
@@ -89,7 +101,7 @@ class CreateTournamentText(View):
         # description = input("Description du tournoi:\n> ")
 
 
-        # print(f"\nLe tournoi \"{name}\" a été crée.")
+        # print(f"\nLe tournoi \"{name}\" a été crée. Vous devez ajouter {number_players} joueurs.")
         
         # user_input = {
         #     "name": name,
@@ -100,16 +112,21 @@ class CreateTournamentText(View):
         #     "description": description
         # }  
         
-        user_input = {
-            "name": "Grand Tournoi",
-            "place": "Lyon",
-            "time_control": "Blitz",
-            "number_players": 8,
-            "tour_number": 4,
-            "description": "Super tournoi d'été"
-        }          
+        tournament_id = 0
+        name = "Grand tournois"
+        description = "Description"
+        start_date_and_hour = "Le tournois n'a pas commencé"
+        end_date_and_hour = "Le tournois n'est pas fini"
+        place = "Lyon"
+        tour_number = 4
+        time_control = "Blitz"
         
-        return user_input  
+        number_players = 8
+
+        
+        tournament = [name, description, start_date_and_hour, end_date_and_hour, place, tour_number, time_control, number_players, tournament_id]
+        
+        return tournament  
         
 
 class LoadTournamentText(View):
@@ -122,12 +139,18 @@ class LoadTournamentText(View):
         print("Le tournois à bien été chargé")
         return user_input
     
-    
 
-    
     
 class CreatePlayerText(View):
     def display(self):
+        
+
+        # first_name = "Li"
+        # name = "Hunold"
+        # birthdate = "03-04-1977"
+        # sex = "H"
+        # rank = 30
+                
         
         # first_name = input("""Prénom du joueur:\n> """)
         
@@ -151,6 +174,7 @@ class CreatePlayerText(View):
         #     msg_error="Veuillez entrer une valeur numérique valide.",
         #     value_type="numeric"
         # )
+
         
         first_name = "Aloise"
         name = "Hunold"
@@ -165,9 +189,6 @@ class CreatePlayerText(View):
 
         
         return player    
-
-
-        
         
 
 class ChangePlayerRankText(View):
@@ -191,15 +212,27 @@ class LoadPlayerText(View):
         
         return user_input
     
-# class LoadTournamentText(View):
-#     def display(self):
-#         user_input = self.get_user_input(
-#             msg_display="Identifiant du tournois à charger:\n> ",
-#             msg_error="Veuillez entrer une valeur numérique valide.",
-#             value_type="numeric"
-#         )
+    
+class CreateOrLoadPlayerText(View):
+    def display(self):
+        user_input = self.get_user_input(
+            msg_display = "0 - Créer un joueur \n1 - Choisir un joueur en base\nVotre choix : ",
+            msg_error = "Veuillez entrer une valeur valide",
+            value_type = "selection",
+            assertions = ["0", "1"]
+        )
         
-#         return user_input
+        return user_input    
+    
+class LoadTournamentText(View):
+    def display(self):
+        user_input = self.get_user_input(
+            msg_display="Identifiant du tournois à charger:\n> ",
+            msg_error="Veuillez entrer une valeur numérique valide.",
+            value_type="numeric"
+        )
+        
+        return user_input
     
     
 

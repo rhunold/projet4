@@ -6,7 +6,7 @@ import random
 
 import json
 
-from models.player import Player, players
+from models.player import Player
 from controllers.time import get_timestamp
 from views.interface import CreatePlayerText, ChangePlayerRankText, LoadPlayerText
 
@@ -16,133 +16,110 @@ json_player = 'models/players.json'
 db = TinyDB(json_player)
 
 
-def load_player(player_id):  
-    search_result = db.search(Query().fragment({'_player_id': player_id}))
-    
-    if not search_result:
-        print("Pas d'identifiant existant en base de donnée.")
-        LoadPlayerProcess().display()
-            
-        # load_player(player_id)
-    else:
-        player = Player().unserialized(search_result[0])
-        
-    
-    # Probleme ici quand l'id n'existe pas dans la recherche.
 
-        return player
 
-def display_players(): 
-    players_db = db.all()
-    players = []     
+def load_players(): 
+    players_db = db.all() 
+    players = []
     for player in players_db:
         player = Player().unserialized(player)
+        # print(f"{player.player_id} {player.first_name} {player.name} Classement : {player.rank}")
         players.append(player)
-        print(f"{player.player_id} {player.first_name} {player.name} Classement : {player.rank}")
     return players
 
 
 
+def load_player(player_id):  
+    player_db = db.search(Query().fragment({'_player_id': player_id}))
+    if not player_db:
+        print(f"Cet identifiant n'existe pas dans la base de donnée. Veuillez choisir un identifiant disponible.")
+        return player   
+    else:
+        player = Player().unserialized(player_db[0])
+        return player
+    
+def display_players_from_db(players):
+    for player in players:
+        print(f"{player.player_id} {player.first_name} {player.name} Classement : {player.rank}")
 
 class CreatePlayerProcess:
     def display(self):
-        player = CreatePlayerText().display()
+
         
+        user_input = CreatePlayerText().display()
         
-        name = player[0]
-        first_name = player[1]
-        birthdate = player[2]
-        sex = player[3]  
-        rank = player[4]      
-        player_score = 0
-        player_id = 0
+        # player_id = player["player_id"]   
+        player_id = 0       
+        name = user_input[0]
+        first_name = user_input[1]
+        birthdate = user_input[2]
+        sex = user_input[3]  
+        rank = user_input[4]
+        player_score =  0
+
         
         player = Player(player_id, name, first_name, birthdate, sex, rank, player_score)
         
         # players.append(player) # Ajout à la liste des joueurs
-        
-        print(f"Le joueur {player.first_name} a écé crée.")
 
         player.save() 
+        return player
         
     
 class LoadPlayerProcess:
-    def display(self):
-        
-        while True:    
-            display_players()
+    def ask_player_id(self):
+        while True:   
+            players = load_players()
+            display_players_from_db(players)
+         
             try: 
-                # print("test a")
                 player_id = LoadPlayerText().display()
-                print(player_id)
+                # print(player_id)
                 player = load_player(player_id)
+                # print(player)
                 
             except ValueError:
-                print("test c")
+                print("test ValueError")
             else:
+                # print(f"return {player}")
                 return player
-                    
-                      
-        # players = sorted(players, key=lambda x: x._player_id, reverse=True)
-        
+            
+    def load_player(self, player_id):
+        player = load_player(player_id)
+        return player        
 
 
 class ChangePlayerRankProcess:
     def display(self, player): 
-        
+
         # On demande le nouveau classement
-        rank = ChangePlayerRankText().display()
+        user_input = ChangePlayerRankText().display()
         
-        player.rank = rank
+        player.rank = user_input
         player.update_rank()
         print(f"Le classement de {player.first_name} {player.name} a été mis à jour.")
         # time.sleep(1.5)     
-        
-        # Player().update_rank() 
          
 
 class PlayerReportProcess:
-    def display_by_name(self): 
-
-        players_db = db.all()
-        players = []
-        
-        for player in players_db:
-            player = Player().unserialized(player)
-            players.append(player)
-            print(f"{player.player_id} {player.first_name} {player.name} Classement : {player.rank}")     
- 
-        players = sorted(players, key=lambda x: x._first_name, reverse=True)        
-        players = sorted(players, key=lambda x: x._name, reverse=True)            
-        
-  
-   
-        # for player in players:
-        #     return print(f" {player.player_id} {player.first_name} {player.name} Classement : {player.rank}")
-            
-
-        
-    def display_by_rank(self): 
-        pass
-
-        # players_db = db.all()
-        # players = []
-        
-        # for player in players_db:
-        #     player = Player().unserialized(player)
-        #     players.append(player)
-            
-        # players_by_rank = sorted(players, key=lambda x: x._rank, reverse=False)
-                     
-            
-            
-        # for player in players_by_rank:
-        #     print(f" {player.player_id} {player.first_name} {player.name} Classement : {player.rank}")
     
+    def display_by_name(self): 
+        players = load_players()
 
-           
+        players = sorted(players, key=lambda x: x._first_name, reverse=False)        
+        players = sorted(players, key=lambda x: x._name, reverse=True)  
         
+        display_players_from_db(players)
+      
 
-
+    def display_by_rank(self): 
+        players = load_players()
+        
+        players = sorted(players, key=lambda x: x._rank, reverse=False)        
+      
+        display_players_from_db(players)
+        
+            
+     
 
     
