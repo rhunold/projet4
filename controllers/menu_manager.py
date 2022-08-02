@@ -1,168 +1,144 @@
-import time
-import random
+from views.interface import HomeText, ManageTournamentText, \
+    ManagePlayerText, ManageReportText, ManageTournamentReportText
+from controllers.player_manager import CreatePlayerProcess, \
+    ChangePlayerRankProcess, LoadPlayerProcess, PlayerReportProcess
+from controllers.tournament_manager import CreateTournamentProcess, \
+    LoadTournamentProcess, TournamentReportProcess
+# from views.view import View
 
-from controllers.time import get_timestamp, get_date
+# HOME
 
-from models.player import Player
-from models.match import Match
-from models.tour import Tour
-from models.tournament import Tournament
 
-from views.interface import HomeText, ManageTournamentText, ManagePlayerText, CreatePlayerText, CreateTournamentText, LoadPlayerText, ManageReportText, ManageTournamentReportText
-
-from views.view import View
-
-from controllers.player_manager import CreatePlayerProcess, ChangePlayerRankProcess, LoadPlayerProcess, PlayerReportProcess
-from controllers.tournament_manager import CreateTournamentProcess, LoadTournamentProcess, TournamentReportProcess
-
-## HOME
-
-class Home(View):
-    def display(self):    
+class Home:
+    def display(self):
         user_input = HomeText().display()
         if user_input == "0":
-            ManageTournament().display()
-        elif user_input == "1":         
+            CreateTournament().display()
+        elif user_input == "1":
             ManagePlayer().display()
-            
-        elif user_input == "2":
-            ManageReport().display()       
-        else:   
-            quit() 
-            
-                       
-                     
 
-## PLAYER 
-        
-class ManagePlayer(View):
-    def display(self):     
+        elif user_input == "2":
+            ManageReport().display()
+        else:
+            quit()
+
+# PLAYER
+
+
+class ManagePlayer:
+    def display(self):
         user_input = ManagePlayerText().display()
-        
+
         if user_input == "0":
-            CreatePlayer().display()  
-            
+            CreatePlayer().display()
+
         elif user_input == "1":
             ChangePlayerRank().display()
-        else:   
+        else:
             Home().display()
-            
-class CreatePlayer(View):
-    def display(self):     
-        CreatePlayerProcess().display()        
+
+
+class CreatePlayer:
+    def display(self):
+        CreatePlayerProcess().display()
         ManagePlayer().display()
-        
         # Home().display()
-                 
-        
-class LoadPlayer(View):
-    def display(self):     
+
+
+class LoadPlayer:
+    def display(self):
         LoadPlayerProcess().display()
 
-    
 
 # Ne pas afficher si pas de joueur dans la bd
-class ChangePlayerRank(View):
+class ChangePlayerRank:
     def display(self):
-
         player = LoadPlayerProcess().ask_player_id()
         ChangePlayerRankProcess().display(player)
         ManagePlayer().display()
-        
-
-   
-                          
-## TOURNAMENT
 
 
-class ManageTournament(View):
-    def display(self):     
+# TOURNAMENT
+
+
+class ManageTournament:
+    def display(self):
         user_input = ManageTournamentText().display()
-        
+
         if user_input == "0":
             CreateTournament().display()
-            print("Infos du tournois enregistré. Maintenant il faut ajouter des joueurs dans le fichier tournament_manager.py")
+            print("Infos du tournois enregistré."
+                  "Maintenant il faut ajouter des joueurs"
+                  "dans le fichier tournament_manager.py")
 
         elif user_input == "1":
             LoadTournament().display()
-            pass
-        else:   
             Home().display()
-            
-class CreateTournament(View):
-    def display(self):     
+            pass
+        else:
+            Home().display()
+
+
+class CreateTournament:
+    def display(self):
         CreateTournamentProcess().display()
-        
-        Home().display()        
-        
-        
-class LoadTournament(View):
-    def display(self):     
-        LoadTournamentProcess().ask_tournament_id()
-        
+        Home().display()
 
-      
-                  
-                
-## RAPPORTS
 
-class ManageReport(View):
-    def display(self):     
+class LoadTournament:
+    def display(self):
+        tournament = LoadTournamentProcess().ask_tournament_id()
+        # Home().display()
+        return tournament
+
+
+# RAPPORTS
+
+
+class ManageReport:
+    def display(self):
         user_input = ManageReportText().display()
-        
+
         if user_input == "0":
-            ManageTournamentReport().display()
-            
+            tournament = LoadTournament().display()
+            ManageTournamentReport().display(tournament)
         elif user_input == "1":
             PlayerReport().display_by_name()
-            # ManageReport().display()            
+            # ManageReport().display()
         elif user_input == "2":
             PlayerReport().display_by_rank()
-        else:   
-            Home().display()     
-        
-class PlayerReport(View):
+        else:
+            Home().display()
+
+
+class PlayerReport:
     def display_by_name(self):
         PlayerReportProcess().display_by_name()
         ManageReport().display()
 
     def display_by_rank(self):
         PlayerReportProcess().display_by_rank()
-        ManageReport().display()        
-        
-        
-class ManageTournamentReport(View):  
-    def display(self):
-    
-        tournament = LoadTournamentProcess().ask_tournament_id()
-        
+        ManageReport().display()
+
+
+class ManageTournamentReport:
+    def display(self, tournament):
         user_input = ManageTournamentReportText().display()
-                
+
         if user_input == "0":
             TournamentReportProcess().display_by_player_name(tournament)
-            ManageReport().display() 
+            ManageTournamentReport().display(tournament)
         elif user_input == "1":
             TournamentReportProcess().display_by_player_rank(tournament)
-            ManageReport().display()  
+            ManageTournamentReport().display(tournament)
         elif user_input == "2":
             TournamentReportProcess().display_by_tours(tournament)
-            ManageReport().display()  
+            ManageTournamentReport().display(tournament)
         elif user_input == "3":
-            TournamentReportProcess().display_by_matchs(tournament)            
-            ManageReport().display()  
-        else:   
-            Home().display()     
-     
-   
+            TournamentReportProcess().display_by_matchs(tournament)
+            ManageTournamentReport().display(tournament)
+        elif user_input == "4":
+            ManageReport().display()
 
-        
-
-            
-            
-    
-
-
-        
-
-            
-            
+        # else:
+        #     Home().display()
