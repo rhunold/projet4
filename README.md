@@ -50,14 +50,14 @@ Flake8 permet de s'assurer que le code respecte la PEP8.
 
 Pour lancer l'outil flake, il faut se positionner dans le dossier du programme et écrire dans le terminal :
 ```
-flake8 --exclude .git,env,__pycache__
+flake8 
 ```
 
 Pour obtenir un rapport généré en html.
 ```
-flake8 --format=html --htmldir=flake8-report --exclude .git,env,__pycache__
+flake8 --format=html --htmldir=flake8-report
 ```
-
+.git,env/,
 
 ## Liste d'améliorations possibles
 - Lors de la saisie d'un nouveau joueur ou tournoi, s'assurer que ce dernier n'existe pas déjà en base de donnée.
