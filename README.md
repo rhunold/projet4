@@ -24,6 +24,8 @@ python main.py
 ```
 
 ## Arborescence du menu
+
+```
 Programme
 ├── Gestion des tournois
 │   ├── Création d'un tournoi
@@ -42,6 +44,7 @@ Programme
     │                
     ├── Joueur par odre alphabétique
     └── Joueur par classement
+```    
 
 ## Flake 8
 Flake8 permet de s'assurer que le code respecte la PEP8.
