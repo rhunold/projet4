@@ -53,11 +53,13 @@ Pour lancer l'outil flake, il faut se positionner dans le dossier du programme e
 flake8 
 ```
 
-Pour obtenir un rapport généré en html.
+Pour obtenir un rapport généré en html, il faut utiliser cette commande
 ```
 flake8 --format=html --htmldir=flake8-report
 ```
-.git,env/,
+
+ATTENTION : le module qui permet de générer le rapport en html ne marche plus à date (03/08/2022)
+https://github.com/lordmauve/flake8-html/issues/30
 
 ## Liste d'améliorations possibles
 - Lors de la saisie d'un nouveau joueur ou tournoi, s'assurer que ce dernier n'existe pas déjà en base de donnée.
