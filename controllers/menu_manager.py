@@ -3,17 +3,18 @@ from views.interface import HomeText, ManageTournamentText, \
 from controllers.player_manager import CreatePlayerProcess, \
     ChangePlayerRankProcess, LoadPlayerProcess, PlayerReportProcess
 from controllers.tournament_manager import CreateTournamentProcess, \
-    LoadTournamentProcess, TournamentReportProcess
-# from views.view import View
+    LoadTournamentProcess, TournamentReportProcess, RunTournamentProcess
+from views.view import Menu
+
 
 # HOME
 
 
-class Home:
+class Home(Menu):
     def display(self):
         user_input = HomeText().display()
         if user_input == "0":
-            CreateTournament().display()
+            ManageTournament().display()
         elif user_input == "1":
             ManagePlayer().display()
 
@@ -25,7 +26,7 @@ class Home:
 # PLAYER
 
 
-class ManagePlayer:
+class ManagePlayer(Menu):
     def display(self):
         user_input = ManagePlayerText().display()
 
@@ -38,20 +39,20 @@ class ManagePlayer:
             Home().display()
 
 
-class CreatePlayer:
+class CreatePlayer(Menu):
     def display(self):
         CreatePlayerProcess().display()
         ManagePlayer().display()
         # Home().display()
 
 
-class LoadPlayer:
+class LoadPlayer():
     def display(self):
         LoadPlayerProcess().display()
 
 
 # Ne pas afficher si pas de joueur dans la bd
-class ChangePlayerRank:
+class ChangePlayerRank(Menu):
     def display(self):
         player = LoadPlayerProcess().ask_player_id()
         ChangePlayerRankProcess().display(player)
@@ -61,41 +62,39 @@ class ChangePlayerRank:
 # TOURNAMENT
 
 
-class ManageTournament:
+class ManageTournament(Menu):
     def display(self):
         user_input = ManageTournamentText().display()
 
         if user_input == "0":
-            CreateTournament().display()
-            print("Infos du tournois enregistré."
-                  "Maintenant il faut ajouter des joueurs"
-                  "dans le fichier tournament_manager.py")
+            tournament = CreateTournament().display()
 
         elif user_input == "1":
-            LoadTournament().display()
-            Home().display()
-            pass
+            tournament = LoadTournament().display()
+
         else:
             Home().display()
 
-
-class CreateTournament:
-    def display(self):
-        CreateTournamentProcess().display()
+        RunTournamentProcess().run(tournament)
         Home().display()
 
 
-class LoadTournament:
+class CreateTournament():
+    def display(self):
+        tournament = CreateTournamentProcess().display()
+        return tournament
+
+
+class LoadTournament():
     def display(self):
         tournament = LoadTournamentProcess().ask_tournament_id()
-        # Home().display()
         return tournament
 
 
 # RAPPORTS
 
 
-class ManageReport:
+class ManageReport(Menu):
     def display(self):
         user_input = ManageReportText().display()
 
@@ -111,7 +110,7 @@ class ManageReport:
             Home().display()
 
 
-class PlayerReport:
+class PlayerReport():
     def display_by_name(self):
         PlayerReportProcess().display_by_name()
         ManageReport().display()
@@ -121,7 +120,7 @@ class PlayerReport:
         ManageReport().display()
 
 
-class ManageTournamentReport:
+class ManageTournamentReport():
     def display(self, tournament):
         user_input = ManageTournamentReportText().display()
 

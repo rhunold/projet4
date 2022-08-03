@@ -1,4 +1,4 @@
-import random
+# import random
 from views.interface import MatchWinnerText
 
 
@@ -19,7 +19,6 @@ class Match:
             f'Match : {self.player1_id} ({self.player1_score})'
             f' vs {self.player2_id} ({ self._player2_score})'
             )
-        # return f'{self._match_pair}'
 
     def __repr__(self):
         match = (
@@ -65,28 +64,18 @@ class Match:
     def player2_score(self, x):
         self._player2_score = x
 
-    # @classmethod
-    # def from_json(cls, data):
-    #     return cls(**data)
-
     def play_match(self):
         # Mode random score
-        choice = ["0", "1", "2"]
-        winner = random.choice(choice)
-        # player1_score = float(input(f"Quel est le score du "
-        #                             f"joueur {self._player1_id}"
-        #                             f"(0, 1 ou 0.5) ?"))
+        # choice = ["0", "1", "2", "3"]
+        # winner = random.choice(choice)
 
         # Mode saisie manuelle des scores
-        # winner = MatchWinnerText().display(self._player1_id,
-        # self._player2_id)
+        winner = MatchWinnerText().display(self._player1_id, self._player2_id)
 
         if winner == "0":
             self._player1_score = 1
-            self._player2_score = 0
 
         elif winner == "1":
-            self._player1_score = 0
             self._player2_score = 1
 
         elif winner == "2":
@@ -94,7 +83,8 @@ class Match:
             self._player1_score = 0.5
 
         elif winner == "3":
-            exit()
+            stop = False
+            return stop
 
         # On écrase la version vierge précédente
         self._match_pair = ([self._player1_id, self._player1_score],

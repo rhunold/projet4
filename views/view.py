@@ -1,21 +1,21 @@
-# import os
+import os
+# from datetime import datetime
 # import time
 
 
-# def clear_screen():
-#     #  screen will be cleared for mac/linux
-#     if(os.name == 'posix'):
-#         os.system('clear')
-#     # else screen will be cleared for windows
-#     else:
-#         os.system('cls')
+class Menu():
+    def __init__(self):
+        if (os.name == 'posix'):
+            os.system('clear')
+        # else screen will be cleared for windows
+        else:
+            os.system('cls')
+        # pass
 
 
 class View():
     """Get User input and preprocess """
 
-    # def __init__(self):
-    #     clear_screen()
     def get_user_input(self, msg_display, msg_error,
                        value_type, assertions=None,
                        default_value=None):

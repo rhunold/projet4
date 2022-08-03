@@ -7,10 +7,7 @@ class Tour():
 
     def __init__(self, tour_id=0,
                  start_date_and_hour="", end_date_and_hour="", list_matchs=[]):
-        # self._name = "Round " + str(name)
         self._tour_id = tour_id
-        # self._tour_id = Tour.class_counter
-        # Tour.class_counter += 1
         self._start_date_and_hour = start_date_and_hour
         self._end_date_and_hour = end_date_and_hour
         self._list_matchs = list_matchs
@@ -26,8 +23,6 @@ class Tour():
 
     def __repr__(self):
         tour = (
-            # f'({self._name}, {[str(match)
-            # for match in self._list_matchs]})'
             f'Round("{self._tour_id}",'
             f'"{self._start_date_and_hour}",'
             f'"{self._end_date_and_hour}",'

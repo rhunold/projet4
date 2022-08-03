@@ -8,7 +8,6 @@ class Player:
     """Player Model"""
     def __init__(self,  name="", first_name="",
                  birthdate="", sex="", rank=0, player_score=0):
-        # self._player_id = player_id
         self._name = name
         self._first_name = first_name.capitalize()
         self._birthdate = birthdate
@@ -26,7 +25,6 @@ class Player:
     def __repr__(self):
         player = (
             f'Player('
-            # f'"{self._player_id}", '
             f'"{self._name}",'
             f'"{self._first_name}",'
             f'"{self._birthdate}",'
@@ -95,9 +93,6 @@ class Player:
         self._player_score = x
 
     # others methods
-    # @classmethod
-    # def from_json(cls, list_players: dict):
-    #     return cls(**list_players)
 
     def serialized(self):
         serialized_player = {
@@ -112,7 +107,6 @@ class Player:
         return serialized_player
 
     def unserialized(self, serialized_player):
-        # player_id = serialized_player["player_id"]
         name = serialized_player["name"]
         first_name = serialized_player["first_name"]
         birthdate = serialized_player["birthdate"]
@@ -129,20 +123,8 @@ class Player:
                       player_score
                       )
 
-    # def toJson(self):
-    #     return json.loads(json.dumps(self,
-    # default=lambda o: o.__dict__, indent=4))
-    # @classmethod
-    # def from_json(cls, data):
-    #     return cls(**data)
-
     def save(self):
-        # serialized_player= self.toJson()
-        # player_id = db.insert(self.serialized())
         db.insert(self.serialized())
-
-        # On update l'id du joueur dans le json
-        # db.update({"player_id": player_id}, doc_ids=[player_id])
 
     def update_rank(self):
         db.update({'rank': self.rank}, Query().name == self.name)

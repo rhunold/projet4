@@ -1,7 +1,7 @@
 import time
 # import random
 # import json
-from models.player import Player
+# from models.player import Player
 from models.match import Match
 from models.tour import Tour
 from models.tournament import Tournament
@@ -9,6 +9,7 @@ from models.tournament import Tournament
 from controllers.time import get_timestamp
 from views.interface import CreateTournamentText, \
     LoadTournamentText, CreateOrLoadPlayerText
+
 from controllers.player_manager import LoadPlayerProcess, CreatePlayerProcess
 
 from tinydb import TinyDB, Query
@@ -22,9 +23,7 @@ def load_tournaments():
     for tournament in tournaments_db:
         tournament = Tournament().unserialized(tournament)
         tournaments.append(tournament)
-    # print(tournaments)
     return tournaments
-    # print(tournaments[0])
 
 
 def load_tournament(name):
@@ -34,9 +33,7 @@ def load_tournament(name):
         print("Cet identifiant n'existe pas dans la base de donnée.")
         # return LoadTournamentProcess().ask_tournament_id()
     else:
-        # print(tournament_db[0])
         tournament = Tournament().unserialized(tournament_db[0])
-
         print(f"Le tournoi '{tournament.name}' a bien été chargé.")
         return tournament
 
@@ -80,10 +77,6 @@ class CreateTournamentProcess:
                                 time_control, list_players, list_tours)
         tournament.save()
 
-        # return tournament
-
-    # def add_players(self, tournament):
-
         # AJOUT DES JOUEURS
         # Dynamique
         # Gerer cas ou il n'y a pas de joueurs dans la bdd...
@@ -98,53 +91,56 @@ class CreateTournamentProcess:
 
             # Demander si on veut créer un joueur ou en choisir un en base
 
-            # create_or_load = CreateOrLoadPlayerText().display()
+            create_or_load = CreateOrLoadPlayerText().display()
 
-            # if create_or_load == "0":
-            #     player = CreatePlayerProcess().display()
-            #     tournament.list_players.append(player)
-            #     # tournament.update_list_players()
-            #     continue
+            if create_or_load == "0":
+                player = CreatePlayerProcess().display()
+                tournament.list_players.append(player)
+                # tournament.update_list_players()
+                continue
 
-            # elif create_or_load == "1":
-            #     player = LoadPlayerProcess().ask_player_id()
-            #     tournament.list_players.append(player)
-            #     continue
+            elif create_or_load == "1":
+                player = LoadPlayerProcess().ask_player_id()
+                tournament.list_players.append(player)
+                continue
 
             # else:
             #     # Pour sortir du tournois...et y revenir...
             #     pass
 
             # Statique
-            raphael = Player("Hunold", "raphael",
-                             "04-04-1977", "Homme", 1, 0)
-            thea = Player("Davron", "Thais",
-                          "14-06-2015", "Femme", 5, 0)
-            gabriel = Player("Vigilant", "Xavier",
-                             "11-07-1978", "Homme", 6, 0)
-            inconnu = Player("Lemasson",
-                             "Pierre", "31-01-1980", "Femme", 7, 0)
-            francis = Player("Deluxe", "Nolan",
-                             "12-12-1943", "Homme", 2, 0)
-            flora = Player("Regier", "Flora",
-                           "12-08-1980", "Femme", 11, 0)
-            christine = Player("Rackam", "Marc",
-                               "12-12-1953", "Femme", 10, 0)
-            stephane = Player("Perrotie", "Stef",
-                              "12-12-1973", "Homme", 9, 0)
+            # raphael = Player("Hunold", "raphael",
+            #                  "04-04-1977", "Homme", 1, 0)
+            # thea = Player("Davron", "Thais",
+            #               "14-06-2015", "Femme", 5, 0)
+            # gabriel = Player("Vigilant", "Xavier",
+            #                  "11-07-1978", "Homme", 6, 0)
+            # inconnu = Player("Lemasson",
+            #                  "Pierre", "31-01-1980", "Femme", 7, 0)
+            # francis = Player("Deluxe", "Nolan",
+            #                  "12-12-1943", "Homme", 2, 0)
+            # flora = Player("Regier", "Flora",
+            #                "12-08-1980", "Femme", 11, 0)
+            # christine = Player("Rackam", "Marc",
+            #                    "12-12-1953", "Femme", 10, 0)
+            # stephane = Player("Perrotie", "Stef",
+            #                   "12-12-1973", "Homme", 9, 0)
 
-            # liste de tous les joueurs
-            tournament.list_players = [raphael, thea, gabriel,
-                                       inconnu, francis, flora,
-                                       christine, stephane]
+            # # liste de tous les joueurs
+            # tournament.list_players = [raphael, thea, gabriel,
+            #                            inconnu, francis, flora,
+            #                            christine, stephane]
 
             tournament.update_list_players()
 
-        print(f'Liste des joueurs du tournois :'
-              f'{[player.name for player in tournament.list_players]}')
+        # print(f'Liste des joueurs du tournois :'
+        #       f'{[player.name for player in tournament.list_players]}')
 
-        # return tournament_players
-    # def add_tours(self):
+        return tournament
+
+
+class RunTournamentProcess:
+    def run(self, tournament):
 
         tournament.start_date_and_hour = get_timestamp()
         tournament.update_start_date_and_hour()
@@ -228,36 +224,40 @@ class CreateTournamentProcess:
             # On joue les match du tour pour assigner le score du match
             for match in tour.list_matchs:
 
-                match.play_match()
+                # Verify score for loaded tournament
+                if match.player1_score == 0 and match.player2_score == 0:
 
-                # Assignation des points obtenus au score des joueurs
-                for player in tournament.list_players:
-                    if player.name == match.player1_id:
-                        player.player_score += match.player1_score
-                        # tournament.update_list_players()
-                    if player.name == match.player2_id:
-                        player.player_score += match.player2_score
+                    # print("On sort du tournois.")
+                    if match.play_match() is False:
+                        pause = tournament.save()
+                        return pause
+                    else:
 
-                    tournament.update_list_players()
+                        # Assignation of score and saving
+                        for player in tournament.list_players:
+                            if player.name == match.player1_id:
+                                player.player_score += match.player1_score
+                            if player.name == match.player2_id:
+                                player.player_score += match.player2_score
 
-                    # print(f"le nouveau score de {participant.player_id}"
-                    # f" est {participant.player_score}")
+                            tournament.update_list_players()
+                            # continue
+                    # If match played, just continue
+                    # continue
 
-            time.sleep(0.5)
             tour._end_date_and_hour = get_timestamp()
 
             # On ajouter le tour au tournois
             tournament.list_tours.append(tour)
             tournament.update_list_tours()
-
-        # list_tours = tournament.list_tours
+            time.sleep(1)
 
         # Fin du Tounois
         tournament.end_date_and_hour = get_timestamp()
         tournament.update_end_date_and_hour()
         # tournament.save()
 
-        print(tournament)
+        # print(tournament)
 
         # and the winner of the tournament is
         sort_players_by_score = sorted(tournament.list_players,
@@ -279,6 +279,8 @@ class CreateTournamentProcess:
         else:
             print(f"Le gagnant est {first_first_name}"
                   f" {first_name} avec {first_score}.")
+
+        time.sleep(5)
 
 
 class LoadTournamentProcess:
