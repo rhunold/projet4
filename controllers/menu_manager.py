@@ -48,14 +48,18 @@ class CreatePlayer(Menu):
 
 class LoadPlayer():
     def display(self):
-        LoadPlayerProcess().display()
+        player = LoadPlayerProcess().ask_player_name()
+        return player
 
 
 # Ne pas afficher si pas de joueur dans la bd
 class ChangePlayerRank(Menu):
     def display(self):
-        player = LoadPlayerProcess().ask_player_id()
-        ChangePlayerRankProcess().display(player)
+        player = LoadPlayer().display()
+        if player:
+            ChangePlayerRankProcess().display(player)
+        else:
+            print("Base de donnée vide.")
         ManagePlayer().display()
 
 
@@ -87,7 +91,7 @@ class CreateTournament():
 
 class LoadTournament():
     def display(self):
-        tournament = LoadTournamentProcess().ask_tournament_id()
+        tournament = LoadTournamentProcess().ask_tournament_name()
         return tournament
 
 
@@ -103,7 +107,6 @@ class ManageReport(Menu):
             ManageTournamentReport().display(tournament)
         elif user_input == "1":
             PlayerReport().display_by_name()
-            # ManageReport().display()
         elif user_input == "2":
             PlayerReport().display_by_rank()
         else:
@@ -138,6 +141,3 @@ class ManageTournamentReport():
             ManageTournamentReport().display(tournament)
         elif user_input == "4":
             ManageReport().display()
-
-        # else:
-        #     Home().display()

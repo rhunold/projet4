@@ -23,7 +23,7 @@ class Tour():
 
     def __repr__(self):
         tour = (
-            f'Round("{self._tour_id}",'
+            f'Round({self._tour_id},'
             f'"{self._start_date_and_hour}",'
             f'"{self._end_date_and_hour}",'
             f'{[str(match) for match in self._list_matchs]})'
@@ -80,8 +80,5 @@ class Tour():
         end_date_and_hour = serialized_tour['end_date_and_hour']
         list_matchs = [Match().unserialized(serialized_match)
                        for serialized_match in serialized_tour['list_matchs']]
-        return Tour(tour_id,
-                    start_date_and_hour,
-                    end_date_and_hour,
-                    list_matchs
-                    )
+        return Tour(tour_id, start_date_and_hour,
+                    end_date_and_hour, list_matchs)

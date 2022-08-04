@@ -123,7 +123,7 @@ class Player:
                       player_score
                       )
 
-    def save(self):
+    def insert(self):
         db.insert(self.serialized())
 
     def update_rank(self):

@@ -17,18 +17,15 @@ def load_players():
     players = []
     for player in players_db:
         player = Player().unserialized(player)
-        # print(f"{player.first_name} {player.name} {player.rank}")
         players.append(player)
     return players
 
 
 def load_player(name):
     player_db = db.search(Query().fragment({'name': name}))
-    if not player_db:
-        print("Cet identifiant n'existe pas dans la base de donnée.")
-    else:
-        player = Player().unserialized(player_db[0])
-        return player
+    player = Player().unserialized(player_db[0])
+    print(f"Le joueur '{player.name}' a bien été chargé.")
+    return player
 
 
 def display_players_from_db(players):
@@ -39,7 +36,6 @@ def display_players_from_db(players):
 class CreatePlayerProcess:
     def display(self):
         user_input = CreatePlayerText().display()
-        # player_id = player["player_id"]
 
         name = user_input[0]
         first_name = user_input[1]
@@ -50,47 +46,37 @@ class CreatePlayerProcess:
 
         player = Player(name, first_name, birthdate, sex, rank, player_score)
 
-        # players.append(player) # Ajout à la liste des joueurs
-
-        player.save()
+        player.insert()
         return player
 
 
 class LoadPlayerProcess:
-    def ask_player_id(self):
+    def ask_player_name(self):
         players = load_players()
-        while True:
-            # print(players)
+        if players:
 
-            display_players_from_db(players)
-
-            try:
+            while True:
+                display_players_from_db(players)
                 name = LoadPlayerText().display()
-                # print(player_id)
-                player = load_player(name)
-                # print(player)
-
-            except ValueError:
-                print("test ValueError")
-            else:
-                # print(f"return {player}")
-                return player
-
-    # def load_player(self, name):
-    #     player = load_player(name)
-    #     return player
+                try:
+                    player = load_player(name)
+                except IndexError:
+                    print("Aucun nom correspondant.")
+                    continue
+                else:
+                    return player
+        else:
+            player = False
+            return player
 
 
 class ChangePlayerRankProcess:
     def display(self, player):
-
-        # On demande le nouveau classement
         user_input = ChangePlayerRankText().display()
         player.rank = user_input
         player.update_rank()
         print(f"Le classement de {player.first_name} "
               f"{player.name} a été mis à jour.")
-        # time.sleep(1.5)
 
 
 class PlayerReportProcess:

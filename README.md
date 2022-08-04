@@ -60,10 +60,11 @@ Pour obtenir un rapport généré en html, il faut utiliser cette commande
 flake8 --format=html --htmldir=flake8-report
 ```
 
-ATTENTION : le module qui permet de générer le rapport en html ne marche plus à date (03/08/2022)
+A date (03/08/2022), flake8-html ne marche pas avec la dernière version de flak8. J'ai donc utilisé une version plus ancienne.
 https://github.com/lordmauve/flake8-html/issues/30
 
 ## Liste d'améliorations possibles
 - Si on ajoute un joueur à un tournoi, il ne doit plus être possible de le reselectionner dans le même tournoi
 - Modifier les autres attributs des joueurs (nom, prénom, date de naissance)
 - Supprimer un joueur ou un tournoi.
+- N'afficher les menus de téléchargement uniquement si des données sont en base.

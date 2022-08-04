@@ -1,16 +1,16 @@
-import os
+# import os
 # from datetime import datetime
 # import time
 
 
 class Menu():
-    def __init__(self):
-        if (os.name == 'posix'):
-            os.system('clear')
-        # else screen will be cleared for windows
-        else:
-            os.system('cls')
-        # pass
+    # def __init__(self):
+    #     if (os.name == 'posix'):
+    #         os.system('clear')
+    #     # else screen will be cleared for windows
+    #     else:
+    #         os.system('cls')
+    pass
 
 
 class View():

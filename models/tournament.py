@@ -194,7 +194,7 @@ class Tournament:
 
         return tournament
 
-    def save(self):
+    def insert(self):
         db.insert(self.serialized())
         # db.update({"tournament_id": tournament_id}, doc_ids=[tournament_id])
         # return tournament_id
@@ -211,8 +211,10 @@ class Tournament:
         db.update({'list_players': [
             player.serialized() for player in self.list_players]},
                   Query().name == self.name)
+        print("On update la liste des joueurs")
 
     def update_list_tours(self):
         db.update({'list_tours': [
             tour.serialized() for tour in self.list_tours]},
                   Query().name == self.name)
+        print("On update la liste des tours")
