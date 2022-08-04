@@ -86,51 +86,51 @@ class CreateTournamentText(View):
 
         name = input("\nNom du tournoi:\n")
 
-        # place = self.get_user_input(
-        #     msg_display="\nLieu:\n",
-        #     msg_error="Veuillez entrer un lieu",
-        #     value_type="string"
-        # )
+        place = self.get_user_input(
+            msg_display="\nLieu:\n",
+            msg_error="Veuillez entrer un lieu",
+            value_type="string"
+        )
 
-        # time_control = self.get_user_input(
-        #     msg_display="\nType de partie:\n"
-        #     "0 - Bullet\n"
-        #     "1 - Blitz\n"
-        #     "2 - Coup Rapide\n"
-        #     "Votre choix : ",
-        #     msg_error="Veuillez entrer 0, 1 ou 2.",
-        #     value_type="selection",
-        #     assertions=["0", "1", "2"]
-        # )
+        time_control = self.get_user_input(
+            msg_display="\nType de partie:\n"
+            "0 - Bullet\n"
+            "1 - Blitz\n"
+            "2 - Coup Rapide\n"
+            "Votre choix : ",
+            msg_error="Veuillez entrer 0, 1 ou 2.",
+            value_type="selection",
+            assertions=["0", "1", "2"]
+        )
 
-        # if time_control == "0":
-        #     time_control = "Bullet"
-        # elif time_control == "1":
-        #     time_control = "Blitz"
-        # else:
-        #     time_control = "Coup Rapide"
+        if time_control == "0":
+            time_control = "Bullet"
+        elif time_control == "1":
+            time_control = "Blitz"
+        else:
+            time_control = "Coup Rapide"
 
-        # number_players = self.get_user_input(
-        #     msg_display="\nNombre de joueurs:\n ",
-        #     msg_error="Entrer un nombre entier supérieur ou égal à 2.",
-        #     value_type="num_superior",
-        #     default_value=8
-        # )
+        number_players = self.get_user_input(
+            msg_display="\nNombre de joueurs:\n ",
+            msg_error="Entrer un nombre entier supérieur ou égal à 2.",
+            value_type="num_superior",
+            default_value=8
+        )
 
-        # tour_number = self.get_user_input(
-        #     msg_display="\nNombre de tours (4 par défaut):\n ",
-        #     msg_error="Entrer 4 ou plus.",
-        #     value_type="num_superior",
-        #     default_value=4
-        # )
+        tour_number = self.get_user_input(
+            msg_display="\nNombre de tours (4 par défaut):\n ",
+            msg_error="Entrer 4 ou plus.",
+            value_type="num_superior",
+            default_value=4
+        )
 
-        # description = input("Description du tournoi:\n> ")
+        description = input("Description du tournoi:\n> ")
 
-        description = "\nDescription\n"
-        place = "\nLyon\n"
-        tour_number = 4
-        time_control = "\nBlitz\n"
-        number_players = 8
+        # description = "\nDescription\n"
+        # place = "\nLyon\n"
+        # tour_number = 4
+        # time_control = "\nBlitz\n"
+        # number_players = 8
 
         user_input = [name, description, place,
                       tour_number, time_control, number_players]
