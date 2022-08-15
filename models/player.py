@@ -34,11 +34,6 @@ class Player:
         )
         return player
 
-    # get method
-    # @property
-    # def player_id(self):
-    #     return self._player_id
-
     @property
     def name(self):
         return self._name
@@ -62,11 +57,6 @@ class Player:
     @property
     def player_score(self):
         return self._player_score
-
-    # setter method
-    # @player_id.setter
-    # def player_id(self, x):
-    #     self._player_id= x
 
     @name.setter
     def name(self, x):
@@ -96,7 +86,6 @@ class Player:
 
     def serialized(self):
         serialized_player = {
-            # "player_id": self.player_id,
             "name": self.name,
             "first_name": self.first_name,
             "birthdate": self.birthdate,
@@ -114,14 +103,7 @@ class Player:
         rank = serialized_player["rank"]
         player_score = serialized_player["player_score"]
 
-        return Player(  # player_id,
-                      name,
-                      first_name,
-                      birthdate,
-                      sex,
-                      rank,
-                      player_score
-                      )
+        return Player(name, first_name, birthdate, sex, rank, player_score)
 
     def insert(self):
         db.insert(self.serialized())
