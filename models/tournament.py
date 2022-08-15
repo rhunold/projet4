@@ -10,12 +10,13 @@ class Tournament:
     """Tournament Model"""
     # class_counter= 1
 
-    def __init__(self, name="", description="", start_date_and_hour="",
+    def __init__(self, tournament_id=0, name="", description="", start_date_and_hour="",
                  end_date_and_hour="", place="", tour_number=4,
                  time_control="", list_players=[], list_tours=[]):
         # self._tournament_id = Tournament.class_counter
         # Tournament.class_counter += 1
         # self._tournament_id = tournament_id
+        self._tournament_id = tournament_id
         self._name = name
         self._description = description
         self._start_date_and_hour = start_date_and_hour  # get_timestamp()
@@ -46,8 +47,8 @@ class Tournament:
 
     def __repr__(self):
         tournament = (
-            f'Tournament("{self._name}",'
-            # f'"{self._tournament_id}",'
+            f'Tournament("{self._tournament_id}",'
+            f'"{self._name}",'
             f'"{self._description}",'
             f'"{self._start_date_and_hour}",'
             f'"{self._end_date_and_hour}",'
@@ -55,16 +56,13 @@ class Tournament:
             f'{self._tour_number},'
             f'"{self._time_control}",'
             f'"{[player for player in self._list_players]}",'
-            # f'"{self._list_players}",'
             f'"{[tour for tour in self._list_tours]}")'
-            # f'"{self._list_tours}")'
         )
         return tournament
 
-    # get method
-    # @property
-    # def tournament_id(self):
-    #     return self._tournament_id
+    @property
+    def tournament_id(self):
+        return self._tournament_id
 
     @property
     def name(self):
@@ -102,10 +100,9 @@ class Tournament:
     def list_players(self):
         return self._list_players
 
-    # setter method
-    # @tournament_id.setter
-    # def tournament_id(self, x):
-    #     self._tournament_id = x
+    @tournament_id.setter
+    def tournament_id(self, x):
+        self._tournament_id = x
 
     @name.setter
     def name(self, x):
@@ -146,7 +143,7 @@ class Tournament:
     # Other methods
     def serialized(self):
         serialized_tournament = {
-            # "tournament_id": self.tournament_id,
+            "tournament_id": self.tournament_id,
             "name": self.name,
             "description": self.description,
             "start_date_and_hour": self.start_date_and_hour,
@@ -161,7 +158,7 @@ class Tournament:
         return serialized_tournament
 
     def unserialized(self, serialized_tournament):
-        # tournament_id = serialized_tournament["_tournament_id"]
+        tournament_id = serialized_tournament['tournament_id']
         name = serialized_tournament['name']
         description = serialized_tournament['description']
         start_date_and_hour = serialized_tournament['start_date_and_hour']
@@ -169,48 +166,34 @@ class Tournament:
         place = serialized_tournament['place']
         tour_number = serialized_tournament['tour_number']
         time_control = serialized_tournament['time_control']
-        # list_players= serialized_tournament["list_players"]
         list_players = [Player().unserialized(serialized_player)
                         for serialized_player
                         in serialized_tournament['list_players']]
-
-        # list_players = [Player().unserialized(serialized_player)
-        # for serialized_player in serialized_tournament['list_players']]
         list_tours = [Tour().unserialized(serialized_tour)
                       for serialized_tour
                       in serialized_tournament['list_tours']]
-        # list_tours = serialized_tournament["list_tours"]
-        tournament = Tournament(  # tournament_id,
-                          name,
-                          description,
-                          start_date_and_hour,
-                          end_date_and_hour,
-                          place,
-                          tour_number,
-                          time_control,
-                          list_players,
-                          list_tours
-                          )
+        tournament = Tournament(tournament_id, name, description, start_date_and_hour,
+                                end_date_and_hour, place, tour_number,
+                                time_control, list_players, list_tours)
 
         return tournament
 
     def insert(self):
-        db.insert(self.serialized())
-        # db.update({"tournament_id": tournament_id}, doc_ids=[tournament_id])
-        # return tournament_id
+        tournament_id = db.insert(self.serialized())
+        # print(tournament_id)
+        self.tournament_id = tournament_id
+        db.update({'tournament_id': self.tournament_id}, Query().tournament_id == 0)
+        # quit()
 
     def update_start_date_and_hour(self):
-        db.update({'start_date_and_hour': self.start_date_and_hour},
-                  Query().name == self.name)
+        db.update({'start_date_and_hour': self.start_date_and_hour}, Query().tournament_id == self.tournament_id)
 
     def update_end_date_and_hour(self):
-        db.update({'end_date_and_hour': self.end_date_and_hour},
-                  Query().name == self.name)
+        db.update({'end_date_and_hour': self.end_date_and_hour}, Query().tournament_id == self.tournament_id)
 
     def update_list_players(self):
         db.update({'list_players': [
-            player.serialized() for player in self.list_players]},
-                  Query().name == self.name)
+            player.serialized() for player in self.list_players]}, Query().tournament_id == self.tournament_id)
 
     def update_list_tours(self):
         db.update({'list_tours': [

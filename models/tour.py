@@ -2,23 +2,25 @@ from models.match import Match
 
 
 class Tour():
-    """Round Model"""
-    # class_counter= 1
+    """Tour Model"""
+    # counter = 1
 
     def __init__(self, tour_id=0,
                  start_date_and_hour="", end_date_and_hour="", list_matchs=[]):
         self._tour_id = tour_id
+        # self._tour_id = Tour.counter
+        # Tour.counter += 1
         self._start_date_and_hour = start_date_and_hour
         self._end_date_and_hour = end_date_and_hour
         self._list_matchs = list_matchs
 
     def __str__(self):
+        matchs = ', '.join(['{}'.format(str(match)) for match in self._list_matchs])
         return (
-            f'Round {self._tour_id}\n'
+            f'Tour {self._tour_id}\n'
             f'Date de début : {self._start_date_and_hour}\n'
+            f'Liste des matchs : {matchs}\n'
             f'Date de fin : {self._end_date_and_hour}\n'
-            f'Liste des matchs :'
-            f'{[str(match) for match in self._list_matchs]}\n'
             )
 
     def __repr__(self):
@@ -62,7 +64,7 @@ class Tour():
 
     @end_date_and_hour.setter
     def end_date_and_hour(self, x):
-        self._end_date = x
+        self._end_date_and_hour = x
 
     # serialization
     def serialized(self):

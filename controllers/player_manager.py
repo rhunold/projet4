@@ -29,8 +29,14 @@ def load_player(name):
 
 
 def display_players_from_db(players):
-    for player in players:
-        print(f" {player.first_name} {player.name} Classement : {player.rank}")
+    if players == []:
+        print("\nAucun joueur en base de donnée.")
+    else:
+        print("\nJoueurs par ordre alphabétique")
+        print(f"{'Prénom' : <20}{'Nom' : <20} {'Classement' : ^10}{'Sex' : ^5}")
+        for player in players:
+            print(f"{player.first_name : <20}{player.name : <20}"
+                  f"{player.rank : ^10} {player.sex : ^5}")
 
 
 class CreatePlayerProcess:
@@ -54,18 +60,18 @@ class LoadPlayerProcess:
     def ask_player_name(self):
         players = load_players()
         if players:
-
             while True:
                 display_players_from_db(players)
                 name = LoadPlayerText().display()
                 try:
                     player = load_player(name)
                 except IndexError:
-                    print("Aucun nom correspondant.")
+                    print("\nAucune correspondance. Veuillez réessayer.\n")
                     continue
                 else:
                     return player
         else:
+            print("\nAucun joueur n'est en base de donnée. Veuillez en créer un.\n")
             player = False
             return player
 
@@ -77,6 +83,7 @@ class ChangePlayerRankProcess:
         player.update_rank()
         print(f"Le classement de {player.first_name} "
               f"{player.name} a été mis à jour.")
+        return player.update_rank()
 
 
 class PlayerReportProcess:
@@ -84,9 +91,9 @@ class PlayerReportProcess:
         players = load_players()
         players = sorted(players, key=lambda x: x.first_name, reverse=False)
         players = sorted(players, key=lambda x: x.name, reverse=True)
-        display_players_from_db(players)
+        return display_players_from_db(players)
 
     def display_by_rank(self):
         players = load_players()
         players = sorted(players, key=lambda x: x.rank, reverse=False)
-        display_players_from_db(players)
+        return display_players_from_db(players)

@@ -23,7 +23,7 @@ class ManageTournamentText(View):
         user_input = self.get_user_input(
             msg_display="\nGestion des tournois\n"
             "0 - Créer un tournoi \n"
-            "1 - Charger un tournois non terminé.\n"
+            "1 - Charger un tournois\n"
             "2 - Accueil\n"
             "Votre choix : ",
             msg_error="Veuillez entrer une valeur valide",
@@ -68,10 +68,10 @@ class ManageTournamentReportText(View):
     def display(self):
         user_input = self.get_user_input(
             msg_display="\nClassement du tournois :\n"
-            "0 - par nom des joueurs\n"
-            "1 - par rang des joueurs\n"
-            "2 - par tour\n"
-            "3 - par match\n"
+            "0 - Par nom des joueurs\n"
+            "1 - Par rang des joueurs\n"
+            "2 - Par tour\n"
+            "3 - Par match\n"
             "4 - Retour au menu des rapports\n"
             "Votre choix : ",
             msg_error="Veuillez entrer une valeur valide",
@@ -84,11 +84,15 @@ class ManageTournamentReportText(View):
 class CreateTournamentText(View):
     def display(self):
 
-        name = input("\nNom du tournoi:\n")
+        name = self.get_user_input(
+            msg_display="\nNom du tournois:\n",
+            msg_error="Veuillez entrer des lettres",
+            value_type="string"
+        )
 
         place = self.get_user_input(
             msg_display="\nLieu:\n",
-            msg_error="Veuillez entrer un lieu",
+            msg_error="Veuillez entrer des lettres",
             value_type="string"
         )
 
@@ -111,63 +115,80 @@ class CreateTournamentText(View):
             time_control = "Coup Rapide"
 
         number_players = self.get_user_input(
-            msg_display="\nNombre de joueurs:\n ",
+            msg_display="\nNombre de joueurs:\n",
             msg_error="Entrer un nombre entier supérieur ou égal à 2.",
             value_type="num_superior",
             default_value=8
         )
 
         tour_number = self.get_user_input(
-            msg_display="\nNombre de tours (4 par défaut):\n ",
+            msg_display="\nNombre de tours (4 par défaut):\n",
             msg_error="Entrer 4 ou plus.",
             value_type="num_superior",
             default_value=4
         )
 
-        description = input("Description du tournoi:\n> ")
+        description = self.get_user_input(
+            msg_display="\nDescription du tournoi:\n",
+            msg_error="Veuillez entrer des lettres",
+            value_type="string"
+        )
 
-        # description = "\nDescription\n"
-        # place = "\nLyon\n"
+        # Static Values
+        # name = input("Nom du tournoi:")
+        # description = "Description"
+        # place = "Lyon"
         # tour_number = 4
-        # time_control = "\nBlitz\n"
+        # time_control = "Blitz"
         # number_players = 8
 
-        user_input = [name, description, place,
-                      tour_number, time_control, number_players]
+        tournament = {"name": name, "description": description,
+                      "place": place, "tour_number": tour_number,
+                      "time_control": time_control,
+                      "number_players": number_players}
 
-        print(f"\nLe tournoi \"{name}\" a été crée."
-              f"Vous devez ajouter {number_players} joueurs.\n")
-        return user_input
+        print(f'\nLe tournoi {tournament["name"]} a été crée.\n'
+              f'Vous devez ajouter {tournament["number_players"]} joueurs.\n')
+        return tournament
 
 
 class CreatePlayerText(View):
     def display(self):
-        first_name = input("\nPrénom du joueur:\n> ")
+        first_name = self.get_user_input(
+            msg_display="\nPrénom:\n",
+            msg_error="Veuillez entrer des lettres",
+            value_type="string"
+        )
 
-        name = input("\nNom du joueur:\n> ")
+        name = self.get_user_input(
+            msg_display="\nNom:\n",
+            msg_error="Veuillez entrer des lettres",
+            value_type="string"
+        )
 
         birthdate = self.get_user_input(
-            msg_display="\nDate de naissance (format JJ-MM-AAAA):\n>",
-            msg_error="Veuillez entrer une date"
-            "au format valide: JJ-MM-AAAA",
+            msg_display="\nDate de naissance (format JJ-MM-AAAA):\n",
+            msg_error="Veuillez entrer une date au format valide: JJ-MM-AAAA",
             value_type="date"
         )
 
         sex = self.get_user_input(
-            msg_display="\nSexe (H ou F):\n> ",
+            msg_display="\nSexe (H ou F):\n",
             msg_error="Veuillez entrer H ou F",
             value_type="selection",
             assertions=["H", "h", "F", "f"]
         ).upper()
 
         rank = self.get_user_input(
-            msg_display="\nClassement:\n>",
+            msg_display="\nClassement:\n",
             msg_error="Veuillez entrer une valeur numérique valide.",
             value_type="numeric"
         )
 
+        # Statics Values
+        # name = "Hunold"
         # first_name = "Aloise"
-        # # name = "Hunold"
+        # name = "Hunold"
         # birthdate = "03-04-1977"
         # sex = "H"
         # rank = 30
@@ -182,7 +203,7 @@ class CreatePlayerText(View):
 class ChangePlayerRankText(View):
     def display(self):
         user_input = self.get_user_input(
-            msg_display="\nNouveau classement :\n> ",
+            msg_display="\nNouveau classement :\n",
             msg_error="Veuillez entrer une valeur numérique valide.",
             value_type="numeric"
         )
@@ -210,8 +231,12 @@ class CreateOrLoadPlayerText(View):
 
 class LoadTournamentText(View):
     def display(self):
-        user_input = input("\nQuel est le nom du tournois ?\n")
-        # print(user_input)
+        # user_input = input("\nQuel est le numero du tournois ?\n")
+        user_input = self.get_user_input(
+            msg_display="\nQuel est le numero du tournois ?\n",
+            msg_error="Veuillez entrer une valeur numérique valide.",
+            value_type="numeric"
+        )
         return user_input
 
 

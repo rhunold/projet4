@@ -16,8 +16,8 @@ class Match:
 
     def __str__(self):
         return (
-            f'Match : {self.player1_name} ({self.player1_score})'
-            f' vs {self.player2_name} ({ self._player2_score})'
+            f'{self.player1_name} ({self.player1_score})'
+            f' - {self.player2_name} ({ self._player2_score})'
             )
 
     def __repr__(self):
@@ -83,6 +83,7 @@ class Match:
             self._player2_score = 0.5
             self._player1_score = 0.5
 
+        # Exit the match and tournament
         elif winner == "3":
             return False
 

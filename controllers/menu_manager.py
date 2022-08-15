@@ -59,7 +59,8 @@ class ChangePlayerRank(Menu):
         if player:
             ChangePlayerRankProcess().display(player)
         else:
-            print("Base de donnée vide.")
+            pass
+            # print("Base de donnée vide.")
         ManagePlayer().display()
 
 
@@ -72,15 +73,28 @@ class ManageTournament(Menu):
 
         if user_input == "0":
             tournament = CreateTournament().display()
+            RunTournamentProcess().run(tournament)
+            Home().display()
 
         elif user_input == "1":
+
             tournament = LoadTournament().display()
+
+            if tournament:
+                # tournament = LoadTournament().display()
+                RunTournamentProcess().run(tournament)
+                Home().display()
+
+            else:
+                ManageTournament().display()
+            # ManageTournament().display()
+            # else:
+            #     RunTournamentProcess().run(tournament)
+            #     pass
+                # ManageTournament().display()
 
         else:
             Home().display()
-
-        RunTournamentProcess().run(tournament)
-        Home().display()
 
 
 class CreateTournament():
@@ -91,20 +105,25 @@ class CreateTournament():
 
 class LoadTournament():
     def display(self):
-        tournament = LoadTournamentProcess().ask_tournament_name()
+        tournament = LoadTournamentProcess().ask_tournament_id()
         return tournament
+        # if tournament == None:
+        #     pass
+        # else:
+        #     return tournament
 
 
 # RAPPORTS
-
-
 class ManageReport(Menu):
     def display(self):
         user_input = ManageReportText().display()
 
         if user_input == "0":
             tournament = LoadTournament().display()
-            ManageTournamentReport().display(tournament)
+            if tournament:
+                ManageTournamentReport().display(tournament)
+            else:
+                ManageReport().display()
         elif user_input == "1":
             PlayerReport().display_by_name()
         elif user_input == "2":
@@ -126,7 +145,6 @@ class PlayerReport():
 class ManageTournamentReport():
     def display(self, tournament):
         user_input = ManageTournamentReportText().display()
-
         if user_input == "0":
             TournamentReportProcess().display_by_player_name(tournament)
             ManageTournamentReport().display(tournament)
