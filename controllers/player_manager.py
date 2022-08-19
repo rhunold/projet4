@@ -21,9 +21,10 @@ def load_players():
     return players
 
 
-def load_player(name):
-    player_db = db.search(Query().fragment({'name': name}))
-    player = Player().unserialized(player_db[0])
+def load_player(player_id):
+    Load = Query()
+    player_db = db.get(Load.player_id == player_id)
+    player = Player().unserialized(player_db)
     print(f"Le joueur '{player.name}' a bien été chargé.")
     return player
 
@@ -33,9 +34,10 @@ def display_players_from_db(players):
         print("\nAucun joueur en base de donnée.")
     else:
         print("\nJoueurs par ordre alphabétique")
-        print(f"{'Prénom' : <20}{'Nom' : <20} {'Classement' : ^10}{'Sex' : ^5}")
+        print(f"{'ID' : <6}{'Prénom' : <20}{'Nom' : <20} {'Classement' : ^10}{'Sex' : ^5}")
         for player in players:
-            print(f"{player.first_name : <20}{player.name : <20}"
+            print(f"{player.player_id : <6}"
+                  f"{player.first_name : <20}{player.name : <20}"
                   f"{player.rank : ^10} {player.sex : ^5}")
 
 
@@ -43,6 +45,7 @@ class CreatePlayerProcess:
     def display(self):
         user_input = CreatePlayerText().display()
 
+        player_id = 0
         name = user_input[0]
         first_name = user_input[1]
         birthdate = user_input[2]
@@ -50,22 +53,22 @@ class CreatePlayerProcess:
         rank = user_input[4]
         player_score = 0
 
-        player = Player(name, first_name, birthdate, sex, rank, player_score)
+        player = Player(player_id, name, first_name, birthdate, sex, rank, player_score)
 
         player.insert()
         return player
 
 
 class LoadPlayerProcess:
-    def ask_player_name(self):
+    def ask_player_id(self):
         players = load_players()
         if players:
             while True:
                 display_players_from_db(players)
-                name = LoadPlayerText().display()
+                player_id = LoadPlayerText().display()
                 try:
-                    player = load_player(name)
-                except IndexError:
+                    player = load_player(player_id)
+                except TypeError:
                     print("\nAucune correspondance. Veuillez réessayer.\n")
                     continue
                 else:
@@ -89,8 +92,7 @@ class ChangePlayerRankProcess:
 class PlayerReportProcess:
     def display_by_name(self):
         players = load_players()
-        players = sorted(players, key=lambda x: x.first_name, reverse=False)
-        players = sorted(players, key=lambda x: x.name, reverse=True)
+        players = sorted(players, key=lambda x: (x.name, x.first_name), reverse=False)
         return display_players_from_db(players)
 
     def display_by_rank(self):

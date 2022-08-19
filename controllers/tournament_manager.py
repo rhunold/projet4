@@ -37,12 +37,11 @@ def display_tournaments_from_db(tournaments):
     if tournaments == []:
         print("\nAucun tournois en base de donnée.")
     else:
-        print(f"{'ID' : <5}{'Nom du tournois' : <25}{'Début' : <22}"
-              f"{'Fin' : <22}{'Lieu' : <20}{'Description' : <50} ")
+        print(f"{'ID' : <5}{'Nom du tournois' : <30}{'Début' : <22}"
+              f"{'Fin' : <22}{'Lieu' : <20}{'Description' : <50}")
         for tournament in tournaments:
-            # if tournament.end_date_and_hour != "":
             print(f"{tournament.tournament_id : <5}"
-                  f"{tournament.name : <25}"
+                  f"{tournament.name : <30}"
                   f"{tournament.start_date_and_hour : <22}"
                   f"{tournament.end_date_and_hour : <22}"
                   f"{tournament.place : <20}"
@@ -183,13 +182,12 @@ class CreateTournamentProcess:
             if create_or_load == "0":
                 player = CreatePlayerProcess().display()
                 tournament.list_players.append(player)
-                print(f"{player.first.name} ajouté au tournois")
-                continue
+                print(f"{player.first_name} ajouté au tournois")
 
             elif create_or_load == "1":
-                player = LoadPlayerProcess().ask_player_name()
+                player = LoadPlayerProcess().ask_player_id()
                 tournament.list_players.append(player)
-                continue
+
             else:
                 pass
 
@@ -435,7 +433,7 @@ class TournamentReportProcess:
     def display_by_player_name(self, tournament):
         players = tournament.list_players
         tournament_id = tournament.tournament_id
-        sorted_players = sorted(players, key=lambda x: x.name, reverse=False)
+        sorted_players = sorted(players, key=lambda x: (x.name, x.first_name), reverse=False)
         display_player(tournament_id, sorted_players)
 
     def display_by_player_rank(self, tournament):

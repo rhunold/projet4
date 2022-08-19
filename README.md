@@ -52,7 +52,7 @@ Flake8 permet de s'assurer que le code respecte la PEP8.
 
 Pour lancer l'outil flake, il faut se positionner dans le dossier du programme et écrire dans le terminal :
 ```
-flake8 
+flake8 --max-line-length 119
 ```
 
 Pour obtenir un rapport généré en html, il faut utiliser cette commande
@@ -67,4 +67,4 @@ https://github.com/lordmauve/flake8-html/issues/30
 - Si on ajoute un joueur à un tournoi, il ne doit plus être possible de le reselectionner dans le même tournoi
 - Modifier les autres attributs des joueurs (nom, prénom, date de naissance)
 - Supprimer un joueur ou un tournoi.
-- N'afficher les menus de téléchargement uniquement si des données sont en base.
+- Afficher les menus de téléchargement uniquement si des données sont en base.

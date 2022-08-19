@@ -48,7 +48,7 @@ class CreatePlayer(Menu):
 
 class LoadPlayer():
     def display(self):
-        player = LoadPlayerProcess().ask_player_name()
+        player = LoadPlayerProcess().ask_player_id()
         return player
 
 

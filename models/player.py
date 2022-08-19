@@ -6,8 +6,9 @@ db = TinyDB('db.json').table('players')
 
 class Player:
     """Player Model"""
-    def __init__(self,  name="", first_name="",
+    def __init__(self, player_id=0, name="", first_name="",
                  birthdate="", sex="", rank=0, player_score=0):
+        self._player_id = player_id
         self._name = name
         self._first_name = first_name.capitalize()
         self._birthdate = birthdate
@@ -25,6 +26,7 @@ class Player:
     def __repr__(self):
         player = (
             f'Player('
+            f'{self._player_id},'
             f'"{self._name}",'
             f'"{self._first_name}",'
             f'"{self._birthdate}",'
@@ -33,6 +35,10 @@ class Player:
             f'{self._player_score})'
         )
         return player
+
+    @property
+    def player_id(self):
+        return self._player_id
 
     @property
     def name(self):
@@ -57,6 +63,10 @@ class Player:
     @property
     def player_score(self):
         return self._player_score
+
+    @player_id.setter
+    def player_id(self, x):
+        self._player_id = x
 
     @name.setter
     def name(self, x):
@@ -86,6 +96,7 @@ class Player:
 
     def serialized(self):
         serialized_player = {
+            "player_id": self.player_id,
             "name": self.name,
             "first_name": self.first_name,
             "birthdate": self.birthdate,
@@ -96,6 +107,7 @@ class Player:
         return serialized_player
 
     def unserialized(self, serialized_player):
+        player_id = serialized_player["player_id"]
         name = serialized_player["name"]
         first_name = serialized_player["first_name"]
         birthdate = serialized_player["birthdate"]
@@ -103,10 +115,12 @@ class Player:
         rank = serialized_player["rank"]
         player_score = serialized_player["player_score"]
 
-        return Player(name, first_name, birthdate, sex, rank, player_score)
+        return Player(player_id, name, first_name, birthdate, sex, rank, player_score)
 
     def insert(self):
-        db.insert(self.serialized())
+        player_id = db.insert(self.serialized())
+        self.player_id = player_id
+        db.update({'player_id': self.player_id}, Query().player_id == 0)
 
     def update_rank(self):
-        db.update({'rank': self.rank}, Query().name == self.name)
+        db.update({'rank': self.rank}, Query().player_id == self.player_id)

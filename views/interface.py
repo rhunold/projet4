@@ -212,7 +212,11 @@ class ChangePlayerRankText(View):
 
 class LoadPlayerText(View):
     def display(self):
-        user_input = input("\nQuel est le nom du joueur ?\n")
+        user_input = self.get_user_input(
+            msg_display="\nQuel est le numero du joueur ?\n",
+            msg_error="Veuillez entrer une valeur numérique valide.",
+            value_type="numeric"
+        )
         return user_input
 
 
